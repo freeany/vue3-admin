@@ -87,8 +87,4 @@ defineExpose({
 })
 </script>
 
-<style lang="less" scoped>
-.pane-account {
-  color: red;
-}
-</style>
+<style lang="less" scoped></style>
