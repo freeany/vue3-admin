@@ -81,7 +81,7 @@
 </template>
 
 <script setup lang="ts">
-import useLoginStore from '@/stores/login'
+import useLoginStore from '@/store/login/login'
 import { useRouter } from 'vue-router'
 
 // 0.定义props

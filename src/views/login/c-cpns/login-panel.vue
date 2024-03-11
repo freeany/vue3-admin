@@ -67,29 +67,23 @@ function handleLoginBtnClick() {
 .login-panel {
   width: 330px;
   margin-bottom: 150px;
-
   .title {
     text-align: center;
     margin-bottom: 15px;
   }
-
   .label {
     display: flex;
     align-items: center;
     justify-content: center;
-
     .text {
       margin-left: 5px;
     }
   }
-
   .controls {
     margin-top: 12px;
     display: flex;
-
     justify-content: space-between;
   }
-
   .login-btn {
     margin-top: 10px;
     width: 100%;

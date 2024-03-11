@@ -173,3 +173,59 @@ vite在开发期间(dev)， 是没有用到node环境的。所以没有process�
 
 ![image-20240306202947466](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240306202947466.png)
 
+## 引入element-plus
+
+1. 安装`element-plus`
+
+   ```js
+   pnpm install element-plus
+   ```
+
+2. 在 `tsconfig.json` 中通过 `compilerOptions.type` 指定全局组件类型。
+
+   ```json
+   {
+     "compilerOptions": {
+       // ...
+       "types": ["element-plus/global"]
+     }
+   }
+   ```
+
+3. 按需引入之自动导入（强烈推荐）
+
+   ```bash
+   pnpm install -D unplugin-vue-components unplugin-auto-import
+   ```
+
+4. `vite.config.js`
+
+   ```ts
+   import { defineConfig } from 'vite'
+   import AutoImport from 'unplugin-auto-import/vite'
+   import Components from 'unplugin-vue-components/vite'
+   import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+   
+   export default defineConfig({
+     // ...
+     plugins: [
+       // ...
+       AutoImport({
+         resolvers: [ElementPlusResolver()],
+       }),
+       Components({
+         resolvers: [ElementPlusResolver()],
+       }),
+     ],
+   })
+   ```
+
+5. 启动项目生成`auto-imports.d.ts`和`components.d.ts`
+
+6. 在`tsconfig.json`中`include`添加上面两个文件
+
+   ```ts
+   "include": ["components.d.ts", "auto-imports.d.ts"]
+   ```
+
+7. 
