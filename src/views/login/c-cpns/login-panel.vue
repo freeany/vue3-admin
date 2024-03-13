@@ -1,7 +1,7 @@
 <template>
   <div class="login-panel">
     <!-- 顶部的标题 -->
-    <h1 class="title">弘源后台管理系统</h1>
+    <h1 class="title">后台管理系统</h1>
 
     <!-- 中间的tabs切换 -->
     <div class="tabs">
@@ -47,7 +47,12 @@ import { ref, watch } from 'vue'
 import PaneAccount from './pane-account.vue'
 import PanePhone from './pane-phone.vue'
 
-const activeName = ref('account')
+enum LoginType {
+  account = 'account',
+  phone = 'phone'
+}
+
+const activeName = ref(LoginType.account)
 const isRemPwd = ref<boolean>(localCache.getCache('isRemPwd') ?? false)
 watch(isRemPwd, (newValue) => {
   localCache.setCache('isRemPwd', newValue)
@@ -55,7 +60,7 @@ watch(isRemPwd, (newValue) => {
 const accountRef = ref<InstanceType<typeof PaneAccount>>()
 
 function handleLoginBtnClick() {
-  if (activeName.value === 'account') {
+  if (activeName.value === LoginType.account) {
     accountRef.value?.loginAction(isRemPwd.value)
   } else {
     console.log('用户在进行手机登录')

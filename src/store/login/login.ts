@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { accountLoginRequest, getUserInfoById, getUserMenusByRoleId } from '@/service/login/login'
-import type { IAccount } from '@/types'
+import type { IAccount } from '@/types/index'
 import { localCache } from '@/utils/cache'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
@@ -12,7 +12,6 @@ interface ILoginState {
 }
 
 const useLoginStore = defineStore('login', {
-  // 如何制定state的类型
   state: (): ILoginState => ({
     token: localCache.getCache(LOGIN_TOKEN) ?? '',
     userInfo: localCache.getCache('userInfo') ?? {},
