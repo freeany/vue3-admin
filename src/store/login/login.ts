@@ -7,7 +7,7 @@ import { LOGIN_TOKEN } from '@/global/constants'
 
 interface ILoginState {
   token: string
-  userInfo: any
+  userInfo: any // 因为属性太多了，后期可以根据swagger + 插件进行接口直接转化为ts类型。
   userMenus: any
 }
 

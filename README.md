@@ -480,3 +480,83 @@ const sessionCache = new Cache(CacheType.Session)
 export { localCache, sessionCache }
 ```
 
+
+
+## 权限控制
+
+根据登录用户的不同，呈现不同的后台管理系统内容（具备不同的操作权限）。
+
+一般来说B端项目都是采用了RBAC权限设计。即role based access control（基本角色的访问控制）。
+
+
+
+## 搭建B端项目基本框架
+
+### 整体的容器布局
+
+`views/main/index.vue`：
+
+```vue
+ <div class="main">
+  <el-container class="main-content">
+    <el-aside :width="isFold ? '60px' : '210px'">
+      <main-menu :is-fold="isFold" />
+    </el-aside>
+    <el-container>
+      <el-header height="50px">
+        <main-header @fold-change="handleFoldChange" />
+      </el-header>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+    </el-container>
+  </el-container>
+</div>
+```
+
+### 左侧菜单
+
+```vue
+<div class="main-menu">
+    <!-- 1.logo -->
+    <div class="logo">
+      <img class="img" src="@/assets/img/logo.svg" alt="" />
+      <h2 v-show="!isFold" class="title">后台管理系统</h2>
+    </div>
+
+    <!-- 2.menu -->
+    <div class="menu">
+      <el-menu
+        default-active="3"
+        :collapse="isFold"
+        text-color="#b7bdc3"
+        active-text-color="#fff"
+        background-color="#001529"
+      >
+      <!-- 遍历整个菜单 -->
+      <template v-for="item in userMenus" :key="item.id">
+        <el-sub-menu :index="item.id + ''">
+          <template #title>
+            <!-- 字符串: el-icon-monitor => 组件 component动态组件 -->
+            <el-icon>
+              <component :is="item.icon.split('-icon-')[1]" />
+            </el-icon>
+            <span>{{ item.name }}</span>
+          </template>
+
+          <template v-for="subitem in item.children" :key="subitem.id">
+            <el-menu-item :index="subitem.id + ''" @click="handleItemClick(subitem)">
+              {{ subitem.name }}
+            </el-menu-item>
+          </template>
+        </el-sub-menu>
+      </template>
+    </el-menu>
+  </div>
+</div>
+```
+
+
+
+## 动态路由
+
