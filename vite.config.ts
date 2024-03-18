@@ -38,7 +38,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://codercba.com:5000',
+        target: '',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

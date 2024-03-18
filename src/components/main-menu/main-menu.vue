@@ -64,6 +64,7 @@ function handleItemClick(item: any) {
 }
 // 3.ElMenu的默认菜单
 const route = useRoute()
+// 当path变的时候，defaultActive也要变
 const defaultActive = computed(() => {
   const pathMenu = mapPathToMenu(route.path, userMenus)
   return pathMenu.id + ''

@@ -1,24 +1,26 @@
 import { defineStore } from 'pinia'
 import { accountLoginRequest, getUserInfoById, getUserMenusByRoleId } from '@/service/login/login'
-import type { IAccount } from '@/types/index'
+import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
+import { mapMenusToPermissions, mapMenusToRoutes } from '@/utils/map-menus'
 import router from '@/router'
-import { LOGIN_TOKEN, LOGIN_ID } from '@/global/constants'
-import { mapMenusToRoutes } from '@/utils/map-menus'
+import { LOGIN_TOKEN } from '@/global/constants'
+import useMainStore from '../main/main'
 
 interface ILoginState {
-  id: number | null
   token: string
-  userInfo: any // 因为属性太多了，后期可以根据swagger + 插件进行接口直接转化为ts类型。
+  userInfo: any
   userMenus: any
+  permissions: string[]
 }
 
 const useLoginStore = defineStore('login', {
+  // 如何制定state的类型
   state: (): ILoginState => ({
-    token: localCache.getCache(LOGIN_TOKEN) ?? '',
-    userInfo: localCache.getCache('userInfo') ?? {},
-    id: localCache.getCache('userInfo') ?? null,
-    userMenus: []
+    token: '',
+    userInfo: {},
+    userMenus: [],
+    permissions: []
   }),
   actions: {
     async loginAccountAction(account: IAccount) {
@@ -27,10 +29,7 @@ const useLoginStore = defineStore('login', {
       const id = loginResult.data.id
       this.token = loginResult.data.token
       localCache.setCache(LOGIN_TOKEN, this.token)
-      localCache.setCache(LOGIN_ID, this.id)
-      this.getUserInfo(id)
-    },
-    async getUserInfo(id: number) {
+
       // 2.获取登录用户的详细信息(role信息)
       const userInfoResult = await getUserInfoById(id)
       const userInfo = userInfoResult.data
@@ -41,27 +40,26 @@ const useLoginStore = defineStore('login', {
       const userMenus = userMenusResult.data
       this.userMenus = userMenus
 
-      const routes = mapMenusToRoutes(userMenus)
-
-      routes.forEach((route) => {
-        // console.log(route, '/xxx')
-        /*
-           {
-              path: '/main/analysis/overview',
-              component: () => import('@/views/main/analysis/overview/overview.vue')
-            }
-           */
-
-        router.addRoute('main', route)
-      })
-
       // 4.进行本地缓存
       localCache.setCache('userInfo', userInfo)
-      // localCache.setCache('userMenus', userMenus)
+      localCache.setCache('userMenus', userMenus)
+
+      // 5.请求所有roles/departments数据
+      const mainStore = useMainStore()
+      mainStore.fetchEntireDataAction()
+
+      // 重要: 获取登录用户的所有按钮的权限
+      const permissions = mapMenusToPermissions(userMenus)
+      this.permissions = permissions
+
+      // 重要: 动态的添加路由
+      const routes = mapMenusToRoutes(userMenus)
+      routes.forEach((route) => router.addRoute('main', route))
 
       // 5.页面跳转(main页面)
       router.push('/main')
     },
+
     loadLocalCacheAction() {
       // 1.用户进行刷新默认加载数据
       const token = localCache.getCache(LOGIN_TOKEN)
@@ -72,9 +70,16 @@ const useLoginStore = defineStore('login', {
         this.userInfo = userInfo
         this.userMenus = userMenus
 
+        // 1..请求所有roles/departments数据
+        const mainStore = useMainStore()
+        mainStore.fetchEntireDataAction()
+
+        // 2.获取按钮的权限
+        const permissions = mapMenusToPermissions(userMenus)
+        this.permissions = permissions
+
         // 3.动态添加路由
         const routes = mapMenusToRoutes(userMenus)
-        // 'main' 是路由的name
         routes.forEach((route) => router.addRoute('main', route))
       }
     }

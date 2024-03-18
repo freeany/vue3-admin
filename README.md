@@ -584,8 +584,312 @@ export { localCache, sessionCache }
 
    1. 获取用户菜单列表
 
-   2. 动态获取所有路由对象，
+   2. 获取所有路由对象，
 
-   3. 根据菜单去匹配正确的路由
+   3. 根据菜单去匹配正确的路由，然后添加到路由对象中。
 
-      `router.addRoute('main', [])`
+      `router.addRoute('main', 路由对象)`
+
+   代码如下：
+
+   ```ts
+   // 获取到要添加的路由
+   const routes = mapMenusToRoutes(userMenus)
+   // 动态添加路由 'main' 是路由的name
+   routes.forEach((route) => router.addRoute('main', route))
+   ```
+
+   ```ts
+   // 根据本地路由与接口中获取到的menu菜单对应之后生成最后要addRoute的路由
+   export function mapMenusToRoutes(userMenus: any[]) {
+     // 1.加载本地路由
+     const localRoutes = loadLocalRoutes()
+   
+     // 2.根据菜单去匹配正确的路由
+     const routes: RouteRecordRaw[] = []
+     for (const menu of userMenus) {
+       for (const submenu of menu.children) {
+         const route = localRoutes.find((item) => item.path === submenu.url)
+         if (route) {
+           // 1.给每层的route的顶层菜单增加重定向功能(但是只需要添加一次即可)
+           if (!routes.find((item) => item.path === menu.url)) {
+             routes.push({ path: menu.url, redirect: route.path })
+           }
+   
+           // 2.将二级菜单对应的路径
+           routes.push(route)
+         }
+         // 记录第一个被匹配到的菜单
+         if (!firstMenu && route) firstMenu = submenu
+       }
+     }
+     return routes
+   }
+   ```
+
+   `firstMenu`是后端返回的路由菜单的第一个，这个用来做路由守卫的重定向，当有人想去`/main`的时候重定向到`firstMenu`。
+
+   ```ts
+   router.beforeEach((to) => {
+     
+     // ....
+     if (to.path === '/main') {
+       return firstMenu?.url
+     }
+   })
+   ```
+
+
+
+## 面包屑
+
+根据当前的`route.path`遍历获取面包屑层级， 放到`breadcrumbs`中。
+
+```ts
+// utils.ts
+export function mapPathToBreadcrumbs(path: string, userMenus: any[]) {
+  // 1.定义面包屑
+  const breadcrumbs: IBreadcrumbs[] = []
+
+  // 2.遍历获取面包屑层级
+  for (const menu of userMenus) {
+    for (const submenu of menu.children) {
+      if (submenu.url === path) {
+        // 1.顶层菜单
+        breadcrumbs.push({ name: menu.name, path: menu.url })
+        // 2.匹配菜单
+        breadcrumbs.push({ name: submenu.name, path: submenu.url })
+      }
+    }
+  }
+  return breadcrumbs
+}
+```
+
+`header-crumb.vue`
+
+```vue
+<el-breadcrumb separator-icon="CaretRight">
+  <template v-for="item in breadcrumbs" :key="item.name">
+    <el-breadcrumb-item :to="item.path">
+      {{ item.name }}
+    </el-breadcrumb-item>
+  </template>
+</el-breadcrumb>
+<script>
+  // ...
+  const breadcrumbs = computed(() => {
+    return mapPathToBreadcrumbs(route.path, userMenus)
+  })
+</script>
+```
+
+
+
+## 这个权限架构真的菜，重构！
+
+
+
+## el-form
+
+查询条件重置：
+
+```ts
+function handleResetClick() {
+  formRef.value?.resetFields() // 要保证
+}
+```
+
+要保证`el-form`中的`searchForm`和 `el-form-item`中的`prop`的`name`有对应关系。
+
+```vue
+<el-form :model="searchForm" ref="formRef" label-width="80px" size="large">
+  <el-form-item label="用户名" prop="name">
+    <el-input
+      v-model="searchForm.name"
+      placeholder="请输入查询的用户名"
+    />
+  </el-form-item>
+</el-form>
+```
+
+
+
+## storeToRefs
+
+```ts
+import { storeToRefs } from 'pinia'
+import useSystemStore from '@/store/main/system/system'
+
+// storeToRefs将store中数据的变成响应式的。类似于compute
+const { usersList, usersTotalCount } = storeToRefs(systemStore)
+```
+
+
+
+## dayjs UTC formatter
+
+```ts
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+
+dayjs.extend(utc)
+
+export function formatUTC(
+  utcString: string,
+  format: string = 'YYYY/MM/DD HH:mm:ss'
+) {
+  const resultTime = dayjs.utc(utcString).utcOffset(8).format(format)
+  return resultTime
+}
+```
+
+## element-plus 国际化
+
+```vue
+ <el-config-provider :locale="zhCn">
+    <div class="app">
+      <router-view></router-view>
+    </div>
+  </el-config-provider>
+```
+
+```ts
+<script lang="ts" setup>
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+</script>
+```
+
+## 封装高级搜索
+
+```vue
+<page-search
+  :search-config="searchConfig"
+  @query-click="handleQueryClick"
+  @reset-click="handleResetClick"
+/>
+```
+
+`page-search.vue`
+
+```vue
+ <div class="search" v-if="isQuery">
+    <!-- 1.输入搜索关键字的表单 -->
+    <el-form
+      :model="searchForm"
+      ref="formRef"
+      :label-width="searchConfig.labelWidth ?? '80px'"
+      size="large"
+    >
+      <el-row :gutter="20">
+        <template v-for="item in searchConfig.formItems" :key="item.prop">
+          <el-col :span="8">
+            <el-form-item :label="item.label" :prop="item.prop">
+              <template v-if="item.type === 'input'">
+                <el-input
+                  v-model="searchForm[item.prop]"
+                  :placeholder="item.placeholder"
+                />
+              </template>
+              <template v-if="item.type === 'date-picker'">
+                <el-date-picker
+                  v-model="searchForm[item.prop]"
+                  type="daterange"
+                  range-separator="-"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                />
+              </template>
+              <template v-if="item.type === 'select'">
+                <el-select
+                  v-model="searchForm[item.prop]"
+                  :placeholder="item.placeholder"
+                  style="width: 100%"
+                >
+                  <template v-for="option in item.options" :key="option.value">
+                    <el-option :label="option.label" :value="option.value" />
+                  </template>
+                </el-select>
+              </template>
+            </el-form-item>
+          </el-col>
+        </template>
+      </el-row>
+    </el-form>
+
+    <!-- 2.重置和搜索的按钮 -->
+    <div class="btns">
+      <el-button icon="Refresh" @click="handleResetClick">重置</el-button>
+      <el-button icon="Search" type="primary" @click="handleQueryClick"
+        >查询</el-button
+      >
+    </div>
+</div>
+```
+
+```ts
+interface IProps {
+  searchConfig: {
+    pageName: string
+    labelWidth?: string
+    formItems: any[]
+  }
+}
+const emit = defineEmits(['queryClick', 'resetClick'])
+const props = defineProps<IProps>()
+
+// 获取权限
+const isQuery = usePermissions(`${props.searchConfig.pageName}:query`)
+
+// 定义form的数据
+const initialForm: any = {}
+for (const item of props.searchConfig.formItems) {
+  initialForm[item.prop] = item.initialValue ?? ''
+}
+const searchForm = reactive(initialForm)
+// 重置操作
+const formRef = ref<InstanceType<typeof ElForm>>()
+function handleResetClick() {
+  // 1.form中的数据全部重置
+  formRef.value?.resetFields()
+
+  // 2.将事件出去, content内部重新发送网络请求
+  emit('resetClick')
+}
+
+function handleQueryClick() {
+  emit('queryClick', searchForm)
+}
+```
+
+`config.ts`
+
+```ts
+const searchConfig = {
+  pageName: 'department',
+  formItems: [
+    {
+      type: 'input',
+      prop: 'name',
+      label: '部门名称',
+      placeholder: '请输入查询的部门名称',
+      initialValue: 'bbb'
+    },
+    {
+      type: 'input',
+      prop: 'leader',
+      label: '部门领导',
+      placeholder: '请输入查询的领导名称'
+    },
+    {
+      type: 'date-picker',
+      prop: 'createAt',
+      label: '创建时间'
+    }
+  ]
+}
+
+export default searchConfig
+```
+
+如果select中options的数据如果是服务器来的那么如何处理？
