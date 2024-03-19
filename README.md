@@ -892,4 +892,54 @@ const searchConfig = {
 export default searchConfig
 ```
 
-如果select中options的数据如果是服务器来的那么如何处理？
+### 如果select中options的数据如果是服务器来的那么如何处理？
+
+```ts
+const modalConfig = {
+  formItems: [
+    {
+      type: 'input',
+      label: '部门名称',
+      prop: 'name',
+      placeholder: '请输入部门名称'
+    },
+    {
+      type: 'select',
+      label: '上级部门',
+      prop: 'parentId',
+      placeholder: '请选择上级部门',
+      options: []
+    }
+  ]
+}
+
+export default modalConfig
+```
+
+options设置为空，在传入组件前重新操作一遍
+
+```tsx
+const modalConfigRef = computed(() => {
+  const mainStore = useMainStore()
+  const departments = mainStore.entireDepartments.map((item) => {
+    return { label: item.name, value: item.id }
+  })
+  modalConfig.formItems.forEach((item) => {
+    if (item.prop === 'parentId') {
+      item.options.push(...departments)
+    }
+  })
+
+  return modalConfig
+})
+// 组件：
+<page-modal :modal-config="modalConfigRef" ref="modalRef" />
+```
+
+
+
+
+
+## 坑点
+
+- 如果`script`中的响应式数据没问题，但是页面却不显示，那么可能是数据初始化好了，但是页面还没渲染好(通常是由v-if控制了页面渲染)。
