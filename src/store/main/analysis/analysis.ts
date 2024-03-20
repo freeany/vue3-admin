@@ -1,14 +1,14 @@
 import {
-  getAmountListData,
-  getGoodsAddressSale,
-  getGoodsCategoryCount,
-  getGoodsCategoryFavor,
-  getGoodsCategorySale
+  getAmountList,
+  getCategoryGoodsCount,
+  getCategoryGoodsSale,
+  getCategoryGoodsFavor,
+  getGoodsAddressSale
 } from '@/service/main/analysis/analysis'
 import { defineStore } from 'pinia'
 
 interface IAnalysisState {
-  amountList: any[]
+  amountData: any[]
   goodsCategoryCount: any[]
   goodsCategorySale: any[]
   goodsCategoryFavor: any[]
@@ -17,24 +17,24 @@ interface IAnalysisState {
 
 const useAnalysisStore = defineStore('analysis', {
   state: (): IAnalysisState => ({
-    amountList: [],
+    amountData: [],
     goodsCategoryCount: [],
     goodsCategorySale: [],
     goodsCategoryFavor: [],
     goodsAddressSale: []
   }),
   actions: {
-    fetchAnalysisDataAction() {
-      getAmountListData().then((res) => {
-        this.amountList = res.data
+    fetchDashboardDataAction() {
+      getAmountList().then((res) => {
+        this.amountData = res.data
       })
-      getGoodsCategoryCount().then((res) => {
+      getCategoryGoodsCount().then((res) => {
         this.goodsCategoryCount = res.data
       })
-      getGoodsCategorySale().then((res) => {
+      getCategoryGoodsSale().then((res) => {
         this.goodsCategorySale = res.data
       })
-      getGoodsCategoryFavor().then((res) => {
+      getCategoryGoodsFavor().then((res) => {
         this.goodsCategoryFavor = res.data
       })
       getGoodsAddressSale().then((res) => {

@@ -1,46 +1,46 @@
 <template>
   <div class="content">
-    <div class="header">
-      <h3 class="title">{{ contentConfig?.header?.title ?? '数据列表' }}</h3>
-      <el-button v-if="isCreate" type="primary" @click="handleNewUserClick">
-        {{ contentConfig?.header?.btnTitle ?? '新建数据' }}
+    <div v-if="contentConfig.header" class="header">
+      <h3 class="title">{{ contentConfig.header?.title }}</h3>
+      <el-button v-if="isCreate" type="primary" @click="handleNewData">
+        {{ contentConfig.header?.btnTitle }}
       </el-button>
     </div>
     <div class="table">
       <el-table
         :data="pageList"
-        border
+        :border="true"
         style="width: 100%"
-        v-bind="contentConfig.childrenTree"
+        v-bind="contentConfig.childrenProps"
       >
         <template v-for="item in contentConfig.propsList" :key="item.prop">
-          <template v-if="item.type === 'timer'">
-            <el-table-column align="center" v-bind="item">
+          <template v-if="item.type === 'time'">
+            <el-table-column align="center" :prop="item.prop" :label="item.label">
               <template #default="scope">
-                {{ formatUTC(scope.row[item.prop]) }}
+                {{ utcFormat(scope.row[item.prop]) }}
               </template>
             </el-table-column>
           </template>
           <template v-else-if="item.type === 'handler'">
-            <el-table-column align="center" v-bind="item">
+            <el-table-column align="center" :label="item.label" :width="item.width">
               <template #default="scope">
                 <el-button
                   v-if="isUpdate"
-                  size="small"
-                  icon="Edit"
                   type="primary"
-                  text
-                  @click="handleEditBtnClick(scope.row)"
+                  size="small"
+                  icon="EditPen"
+                  link
+                  @click="handleEditClick(scope.row)"
                 >
                   编辑
                 </el-button>
                 <el-button
                   v-if="isDelete"
+                  type="danger"
                   size="small"
                   icon="Delete"
-                  type="danger"
-                  text
-                  @click="handleDeleteBtnClick(scope.row.id)"
+                  link
+                  @click="handleDeleteClick(scope.row.id)"
                 >
                   删除
                 </el-button>
@@ -48,14 +48,9 @@
             </el-table-column>
           </template>
           <template v-else-if="item.type === 'custom'">
-            <el-table-column align="center" v-bind="item">
+            <el-table-column align="center" :label="item.label" :width="item.width">
               <template #default="scope">
-                <slot
-                  :name="item.slotName"
-                  v-bind="scope"
-                  :prop="item.prop"
-                  hName="why"
-                ></slot>
+                <slot :name="item.slotName" v-bind="scope"></slot>
               </template>
             </el-table-column>
           </template>
@@ -65,139 +60,134 @@
         </template>
       </el-table>
     </div>
-    <div class="pagination">
+    <div class="footer">
       <el-pagination
-        v-model:current-page="currentPage"
+        v-model:currentPage="currentPage"
         v-model:page-size="pageSize"
         :page-sizes="[10, 20, 30]"
         layout="total, sizes, prev, pager, next, jumper"
         :total="pageTotalCount"
-        @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
+<script setup lang="ts" name="content">
 import { storeToRefs } from 'pinia'
 import useSystemStore from '@/store/main/system/system'
-import { formatUTC } from '@/utils/format'
-import usePermissions from '@/hooks/usePermissions'
+import { utcFormat } from '@/utils/format'
+import { ref } from 'vue'
+import usePermission from '@/hooks/usePermission'
 
 interface IProps {
   contentConfig: {
     pageName: string
     header?: {
-      title?: string
-      btnTitle?: string
+      title: string
+      btnTitle: string
     }
     propsList: any[]
-    childrenTree?: any
+    childrenProps?: any
   }
 }
-
 const props = defineProps<IProps>()
+const emit = defineEmits(['newDataClick', 'editDataClick'])
 
-// 定义事件
-const emit = defineEmits(['newClick', 'editClick'])
+// 0.判断是否有增删改查的权限
+const isCreate = usePermission(props.contentConfig.pageName, 'create')
+const isDelete = usePermission(props.contentConfig.pageName, 'delete')
+const isUpdate = usePermission(props.contentConfig.pageName, 'update')
+const isQuery = usePermission(props.contentConfig.pageName, 'query')
 
-// 0.获取是否有对应的增删改查的权限
-const isCreate = usePermissions(`${props.contentConfig.pageName}:create`)
-const isDelete = usePermissions(`${props.contentConfig.pageName}:delete`)
-const isUpdate = usePermissions(`${props.contentConfig.pageName}:update`)
-const isQuery = usePermissions(`${props.contentConfig.pageName}:query`)
-
-// 1.发起action，请求usersList的数据
+// 1.请求数据
 const systemStore = useSystemStore()
 const currentPage = ref(1)
 const pageSize = ref(10)
-systemStore.$onAction(({ name, after }) => {
-  after(() => {
-    if (
-      name === 'deletePageByIdAction' ||
-      name === 'editPageDataAction' ||
-      name === 'newPageDataAction'
-    ) {
-      currentPage.value = 1
-    }
-  })
-})
-fetchPageListData()
+function fetchPageListData(queryInfo: any = {}) {
+  if (!isQuery) return
+  // 1.获取offset和size
+  const size = pageSize.value
+  const offset = (currentPage.value - 1) * size
 
-// 2.获取usersList数据,进行展示
+  // 2.发生网络请求
+  systemStore.getPageListDataAction(props.contentConfig.pageName, { offset, size, ...queryInfo })
+}
+fetchPageListData()
+systemStore.$onAction((arg) => {
+  if (arg.name === 'editPageDataAction' || arg.name === 'newPageDataAction') {
+    currentPage.value = 1
+    pageSize.value = 10
+  }
+})
+
+// 2.展示数据
 const { pageList, pageTotalCount } = storeToRefs(systemStore)
 
-// 3.页码相关的逻辑
-function handleSizeChange() {
-  fetchPageListData()
-}
+// 3.绑定分页数据
 function handleCurrentChange() {
   fetchPageListData()
 }
-
-// 4.定义函数, 用于发送网络请求
-function fetchPageListData(formData: any = {}) {
-  if (!isQuery) return
-
-  // 1.获取offset/size
-  const size = pageSize.value
-  const offset = (currentPage.value - 1) * size
-  const pageInfo = { size, offset }
-
-  // 2.发起网络请求
-  const queryInfo = { ...pageInfo, ...formData }
-  systemStore.postPageListAction(props.contentConfig.pageName, queryInfo)
+function handleResetClick() {
+  currentPage.value = 1
+  pageSize.value = 10
+  fetchPageListData()
 }
 
-// 5.删除/新建/编辑的操作
-function handleDeleteBtnClick(id: number) {
-  systemStore.deletePageByIdAction(props.contentConfig.pageName, id)
-}
-function handleNewUserClick() {
-  emit('newClick')
-}
-function handleEditBtnClick(itemData: any) {
-  emit('editClick', itemData)
+// 4.新建数据的处理
+function handleNewData() {
+  emit('newDataClick')
 }
 
-// 6.监听systemStore中的actions被执行
-defineExpose({ fetchPageListData })
+// 5.删除和编辑操作
+function handleDeleteClick(id: number) {
+  systemStore.deletePageDataAction(props.contentConfig.pageName, id)
+}
+
+function handleEditClick(data: any) {
+  emit('editDataClick', data)
+}
+
+// 暴露函数
+defineExpose({
+  fetchPageListData,
+  handleResetClick
+})
 </script>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 .content {
   margin-top: 20px;
   padding: 20px;
   background-color: #fff;
-}
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-bottom: 10px;
+  .header {
+    display: flex;
+    height: 45px;
+    padding: 0 5px;
+    justify-content: space-between;
+    align-items: center;
 
-  .title {
-    font-size: 22px;
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .handler {
+      align-items: center;
+    }
   }
-}
 
-.table {
-  :deep(.el-table__cell) {
-    padding: 12px 0;
+  .table {
+    :deep(.el-table__cell) {
+      padding: 14px 0;
+    }
   }
 
-  .el-button {
-    margin-left: 0;
-    padding: 5px 8px;
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 15px;
   }
-}
-
-.pagination {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
 }
 </style>

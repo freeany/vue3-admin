@@ -1,36 +1,39 @@
 <template>
-  <div class="pie-echart">
-    <base-echart :options="options"></base-echart>
+  <div class="demo-echart">
+    <base-echart :options="options" />
   </div>
 </template>
 
-<script lang="ts" setup>
-import { defineProps, computed } from 'vue'
+<script setup lang="ts" name="demo-echart">
 import BaseEchart from './base-echart.vue'
 import type { EChartsOption } from 'echarts'
-import type { IPieEchartData } from '../types'
+import { computed } from 'vue'
 
-const props = defineProps<{
-  pieData: IPieEchartData[]
-}>()
+interface IProps {
+  pieData: any[]
+}
+
+const props = defineProps<IProps>()
 
 const options = computed<EChartsOption>(() => {
   return {
-    // 手指放上去的时候显示的文本
+    title: {
+      text: 'Referer of a Website',
+      subtext: 'Fake Data',
+      left: 'center'
+    },
     tooltip: {
       trigger: 'item'
     },
-    // 图例:
     legend: {
-      orient: 'horizontal',
+      orient: 'vertical',
       left: 'left'
     },
     series: [
       {
-        name: '访问来源',
+        name: 'Access From',
         type: 'pie',
         radius: '50%',
-        bottom: '-10%',
         data: props.pieData,
         emphasis: {
           itemStyle: {
@@ -45,4 +48,7 @@ const options = computed<EChartsOption>(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.demo-echart {
+}
+</style>

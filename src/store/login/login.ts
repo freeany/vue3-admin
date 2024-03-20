@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { accountLoginRequest, getUserInfoById, getUserMenusByRoleId } from '@/service/login/login'
 import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
-import { mapMenusToPermissions, mapMenusToRoutes } from '@/utils/map-menus'
+import { mapMenuToPersssions, mapMenuToRoutes } from '@/utils/map-menu'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
 import useMainStore from '../main/main'
@@ -49,11 +49,11 @@ const useLoginStore = defineStore('login', {
       mainStore.fetchEntireDataAction()
 
       // 重要: 获取登录用户的所有按钮的权限
-      const permissions = mapMenusToPermissions(userMenus)
+      const permissions = mapMenuToPersssions(userMenus)
       this.permissions = permissions
 
       // 重要: 动态的添加路由
-      const routes = mapMenusToRoutes(userMenus)
+      const routes = mapMenuToRoutes(userMenus)
       routes.forEach((route) => router.addRoute('main', route))
 
       // 5.页面跳转(main页面)
@@ -75,11 +75,11 @@ const useLoginStore = defineStore('login', {
         mainStore.fetchEntireDataAction()
 
         // 2.获取按钮的权限
-        const permissions = mapMenusToPermissions(userMenus)
+        const permissions = mapMenuToPersssions(userMenus)
         this.permissions = permissions
 
         // 3.动态添加路由
-        const routes = mapMenusToRoutes(userMenus)
+        const routes = mapMenuToRoutes(userMenus)
         routes.forEach((route) => router.addRoute('main', route))
       }
     }

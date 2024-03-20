@@ -943,3 +943,26 @@ const modalConfigRef = computed(() => {
 ## 坑点
 
 - 如果`script`中的响应式数据没问题，但是页面却不显示，那么可能是数据初始化好了，但是页面还没渲染好(通常是由v-if控制了页面渲染)。
+
+
+
+
+
+## 监听store中action的执行
+
+- after表示action执行成功了，才执行after中的回调。
+
+```ts
+systemStore.$onAction(({ name, after }) => {
+  after(() => {
+    if (
+      name === 'deletePageByIdAction' ||
+      name === 'editPageDataAction' ||
+      name === 'newPageDataAction'
+    ) {
+      currentPage.value = 1
+    }
+  })
+})
+```
+

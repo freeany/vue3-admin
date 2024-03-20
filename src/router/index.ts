@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { localCache } from '@/utils/cache'
 import { LOGIN_ID, LOGIN_TOKEN, LOGIN_USERMENU } from '@/global/constants'
-import { firstMenu } from '@/utils/map-menus'
+import { firstRoute } from '@/utils/map-menu'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,7 +35,7 @@ router.beforeEach((to) => {
   if (to.path === '/login') return // 不可return '/login' 否则无限循环
 
   if (to.path === '/main') {
-    return firstMenu?.url
+    return firstRoute?.url
   }
 })
 export default router

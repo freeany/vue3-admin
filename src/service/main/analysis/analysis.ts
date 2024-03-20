@@ -1,31 +1,46 @@
 import hyRequest from '@/service'
 
-export function getAmountListData() {
+enum AnalysisAPI {
+  amountList = '/goods/amount/list',
+  categoryGoodsCount = '/goods/category/count',
+  categoryGoodsSale = '/goods/category/sale',
+  categoryGoodsFavor = '/goods/category/favor',
+  goodsSaleTop10 = '/goods/sale/top10',
+  goodsAddressSale = '/goods/address/sale'
+}
+
+export function getAmountList() {
   return hyRequest.get({
-    url: '/goods/amount/list'
+    url: AnalysisAPI.amountList
   })
 }
 
-export function getGoodsCategoryCount() {
+export function getCategoryGoodsCount() {
   return hyRequest.get({
-    url: '/goods/category/count'
+    url: AnalysisAPI.categoryGoodsCount
   })
 }
 
-export function getGoodsCategorySale() {
+export function getCategoryGoodsSale() {
   return hyRequest.get({
-    url: '/goods/category/sale'
+    url: AnalysisAPI.categoryGoodsSale
   })
 }
 
-export function getGoodsCategoryFavor() {
+export function getCategoryGoodsFavor() {
   return hyRequest.get({
-    url: '/goods/category/favor'
+    url: AnalysisAPI.categoryGoodsFavor
+  })
+}
+
+export function getGoodsSaleTop10() {
+  return hyRequest.get({
+    url: AnalysisAPI.goodsSaleTop10
   })
 }
 
 export function getGoodsAddressSale() {
   return hyRequest.get({
-    url: '/goods/address/sale'
+    url: AnalysisAPI.goodsAddressSale
   })
 }

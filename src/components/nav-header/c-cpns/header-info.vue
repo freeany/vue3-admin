@@ -1,42 +1,40 @@
 <template>
   <div class="header-info">
-    <!-- 1.操作小图标 -->
     <div class="operation">
       <span>
-        <el-icon><Message /></el-icon>
+        <el-icon><bell /></el-icon>
       </span>
       <span>
-        <span class="dot"></span>
         <el-icon><ChatDotRound /></el-icon>
       </span>
       <span>
-        <el-icon><Search /></el-icon>
+        <span class="dot"></span>
+        <el-icon><Postcard /></el-icon>
       </span>
     </div>
-
-    <!-- 2.个人信息 -->
     <div class="info">
       <el-dropdown>
         <span class="user-info">
           <el-avatar
             :size="30"
+            class="avatar"
             src="https://upload.jianshu.io/users/upload_avatars/1102036/c3628b478f06.jpeg"
           />
-          <span class="name">{{ loginStore.userInfo.name }}</span>
+          <span class="name">coderwhy</span>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="handleExitClick">
-              <el-icon><CircleClose /></el-icon>
-              <span>退出系统</span>
+              <el-icon><CircleCloseFilled /></el-icon>
+              退出系统
             </el-dropdown-item>
             <el-dropdown-item divided>
               <el-icon><InfoFilled /></el-icon>
-              <span>个人信息</span>
+              个人信息
             </el-dropdown-item>
             <el-dropdown-item>
               <el-icon><Unlock /></el-icon>
-              <span>修改密码</span>
+              修改密码
             </el-dropdown-item>
           </el-dropdown-menu>
         </template>
@@ -45,22 +43,20 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="header-info">
 import { useRouter } from 'vue-router'
-import { LOGIN_TOKEN } from '@/global/constants'
 import { localCache } from '@/utils/cache'
-import useLoginstore from '@/store/login/login'
 
 const router = useRouter()
 function handleExitClick() {
-  localCache.removeCache(LOGIN_TOKEN)
+  localCache.deleteCache('token')
+  localCache.deleteCache('userInfo')
+  localCache.deleteCache('userMenus')
   router.push('/login')
 }
-
-const loginStore = useLoginstore()
 </script>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 .header-info {
   display: flex;
   align-items: center;
@@ -69,7 +65,6 @@ const loginStore = useLoginstore()
 .operation {
   display: inline-flex;
   margin-right: 20px;
-
   span {
     position: relative;
     display: flex;
@@ -99,15 +94,13 @@ const loginStore = useLoginstore()
   }
 }
 
-.info {
-  .user-info {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+.user-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 
-    .name {
-      margin-left: 5px;
-    }
+  .name {
+    margin-left: 8px;
   }
 }
 

@@ -5,14 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { defineProps, computed } from 'vue'
 import * as echarts from 'echarts'
-import BaseEchart from './base-echart.vue'
+import BaseEchart from '@/components/echarts/index'
+import type { IEchartValueData } from '../types'
 import type { EChartsOption } from 'echarts'
 
 const props = defineProps<{
   labels: string[]
-  values: string[]
+  values: IEchartValueData[]
 }>()
 
 const options = computed<EChartsOption>(() => {
@@ -29,9 +30,21 @@ const options = computed<EChartsOption>(() => {
         inside: true,
         color: '#fff'
       },
+      axisTick: {
+        show: false
+      },
+      axisLine: {
+        show: false
+      },
       z: 10
     },
     yAxis: {
+      axisLine: {
+        show: false
+      },
+      axisTick: {
+        show: false
+      },
       axisLabel: {
         color: '#999'
       }

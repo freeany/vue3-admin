@@ -1,6 +1,6 @@
 <template>
-  <div class="main-header">
-    <div class="menu-icon" @click="handleMenuIconClick">
+  <div class="nav-header">
+    <div class="menu-icon" @click="handleFoldClick">
       <el-icon size="28px">
         <component :is="isFold ? 'Expand' : 'Fold'" />
       </el-icon>
@@ -12,27 +12,21 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="nav-header">
 import { ref } from 'vue'
 import HeaderInfo from './c-cpns/header-info.vue'
-import HeaderCrumb from './c-cpns/header-crumb.vue'
 
-// 0.内部自定义事件
 const emit = defineEmits(['foldChange'])
 
-// 1.记录状态
 const isFold = ref(false)
-function handleMenuIconClick() {
-  // 1.内部改变状态
+function handleFoldClick() {
   isFold.value = !isFold.value
-
-  // 2.将事件和状态传递给父组件
   emit('foldChange', isFold.value)
 }
 </script>
 
-<style lang="less" scoped>
-.main-header {
+<style scoped lang="less">
+.nav-header {
   display: flex;
   align-items: center;
   flex: 1;

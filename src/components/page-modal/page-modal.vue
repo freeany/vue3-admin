@@ -1,42 +1,39 @@
 <template>
   <div class="modal">
-    <el-dialog
-      v-model="dialogVisible"
-      :title="
-        isNewRef ? modalConfig.header.newTitle : modalConfig.header.editTitle
-      "
-      width="30%"
-      center
-    >
+    <el-dialog v-model="dialogVisible" :title="modalConfig.title" width="30%" center>
       <div class="form">
         <el-form :model="formData" label-width="80px" size="large">
           <template v-for="item in modalConfig.formItems" :key="item.prop">
             <el-form-item :label="item.label" :prop="item.prop">
               <template v-if="item.type === 'input'">
+                <el-input v-model="formData[item.prop]" :placeholder="item.placeholder" />
+              </template>
+              <template v-if="item.type === 'password'">
                 <el-input
+                  show-password
                   v-model="formData[item.prop]"
                   :placeholder="item.placeholder"
-                />
-              </template>
-              <template v-if="item.type === 'date-picker'">
-                <el-date-picker
-                  v-model="formData[item.prop]"
-                  type="daterange"
-                  range-separator="-"
-                  start-placeholder="开始时间"
-                  end-placeholder="结束时间"
                 />
               </template>
               <template v-if="item.type === 'select'">
                 <el-select
-                  v-model="formData[item.prop]"
+                  v-model="formData.parentId"
                   :placeholder="item.placeholder"
                   style="width: 100%"
                 >
-                  <template v-for="option in item.options" :key="option.value">
-                    <el-option :label="option.label" :value="option.value" />
+                  <template v-for="value in item.options" :key="value.id">
+                    <el-option :value="value.id" :label="value.name" />
                   </template>
                 </el-select>
+              </template>
+              <template v-if="item.type === 'date-picker'">
+                <el-date-picker
+                  type="daterange"
+                  range-separator="-"
+                  start-placeholder="开始时间"
+                  end-placeholder="结束时间"
+                  v-model="formData[item.prop]"
+                />
               </template>
               <template v-if="item.type === 'custom'">
                 <slot :name="item.slotName"></slot>
@@ -48,98 +45,80 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleConfirmClick">
-            确定
-          </el-button>
+          <el-button type="primary" @click="handleConfirmClick">确定</el-button>
         </span>
       </template>
     </el-dialog>
   </div>
 </template>
 
-<script setup lang="ts">
-import { reactive, ref } from 'vue'
+<script setup lang="ts" name="modal">
 import useSystemStore from '@/store/main/system/system'
-// import type { IModalProps } from './type'
+import { reactive, ref } from 'vue'
 
-// interface IModalConfig
-
-interface IModalProps {
+// 定义props
+interface IProps {
   modalConfig: {
     pageName: string
-    header: {
-      newTitle: string
-      editTitle: string
-    }
+    title: string
     formItems: any[]
   }
   otherInfo?: any
 }
 
-// 0.定义props
-const props = defineProps<IModalProps>()
+const props = defineProps<IProps>()
 
-// 1.定义内部的属性
 const dialogVisible = ref(false)
-const initialData: any = {}
-for (const item of props.modalConfig.formItems) {
-  initialData[item.prop] = item.initialValue ?? ''
-}
-const formData = reactive<any>(initialData)
-const isNewRef = ref(true)
+const isEdit = ref(false)
 const editData = ref()
 
-// 2.获取roles/departments数据
-const systemStore = useSystemStore()
+// 部门和角色的数据
+// const mainStore = useMainStore()
+// const { entireDepartments } = storeToRefs(mainStore)
 
-// 2.定义设置dialogVisible方法
-function setModalVisible(isNew: boolean = true, itemData?: any) {
-  dialogVisible.value = true
-  isNewRef.value = isNew
-  if (!isNew && itemData) {
-    // 编辑数据
-    for (const key in formData) {
-      formData[key] = itemData[key]
-    }
-    editData.value = itemData
-  } else {
-    // 新建数据
-    for (const key in formData) {
-      const item = props.modalConfig.formItems.find((item) => item.prop === key)
-      formData[key] = item ? item.initialValue : ''
-    }
-    editData.value = null
-  }
+// 定义数据绑定
+const initialForm: any = {}
+for (const item of props.modalConfig.formItems) {
+  initialForm[item.prop] = item.initialValue ?? ''
 }
+const formData = reactive(initialForm)
 
-// 3.点击了确定的逻辑
+// 点击确定
+const systemStore = useSystemStore()
 function handleConfirmClick() {
   dialogVisible.value = false
-
-  let infoData = formData
+  let data = { ...formData }
   if (props.otherInfo) {
-    infoData = { ...infoData, ...props.otherInfo }
+    data = { ...data, ...props.otherInfo }
   }
-
-  if (!isNewRef.value && editData.value) {
-    // 编辑用户的数据
-    systemStore.editPageDataAction(
-      props.modalConfig.pageName,
-      editData.value.id,
-      infoData
-    )
+  if (!isEdit.value) {
+    systemStore.newPageDataAction(props.modalConfig.pageName, data)
   } else {
-    // 创建新的部门
-    systemStore.newPageDataAction(props.modalConfig.pageName, infoData)
+    systemStore.editPageDataAction(props.modalConfig.pageName, editData.value.id, data)
   }
 }
 
-// 暴露的属性和方法
-defineExpose({ setModalVisible })
+// 新建或者编辑
+function setDialogVisible(isNew: boolean = true, data: any = {}) {
+  dialogVisible.value = true
+  isEdit.value = !isNew
+  editData.value = data
+  for (const key in formData) {
+    if (isNew) {
+      formData[key] = ''
+    } else {
+      formData[key] = data[key]
+    }
+  }
+}
+
+defineExpose({
+  setDialogVisible
+})
 </script>
 
-<style lang="less" scoped>
+<style scoped lang="less">
 .form {
-  padding: 0 20px;
+  padding: 10px 30px;
 }
 </style>
