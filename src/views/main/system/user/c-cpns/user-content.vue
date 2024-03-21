@@ -81,10 +81,10 @@ import usePermissions from '@/hooks/usePermissions'
 const emit = defineEmits(['newClick', 'editClick'])
 
 // 用户的权限判断
-const isCreate = usePermissions('users:create')
-const isDelete = usePermissions('users:delete')
-const isUpdate = usePermissions('users:delete')
-const isQuery = usePermissions('users:query')
+const isCreate = usePermissions('users', 'create')
+const isDelete = usePermissions('users:', 'delete')
+const isUpdate = usePermissions('users', 'delete')
+const isQuery = usePermissions('users', 'query')
 
 // 1.发起action，请求usersList的数据
 const systemStore = useSystemStore()

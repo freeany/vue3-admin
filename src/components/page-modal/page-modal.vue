@@ -99,7 +99,7 @@ function handleConfirmClick() {
 }
 
 // 新建或者编辑
-function setDialogVisible(isNew: boolean = true, data: any = {}) {
+function setModalVisible(isNew: boolean = true, data: any = {}) {
   dialogVisible.value = true
   isEdit.value = !isNew
   editData.value = data
@@ -113,7 +113,7 @@ function setDialogVisible(isNew: boolean = true, data: any = {}) {
 }
 
 defineExpose({
-  setDialogVisible
+  setModalVisible
 })
 </script>
 

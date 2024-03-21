@@ -37,14 +37,14 @@ import usePageContent from '@/hooks/usePageContent'
 import usePageModal from '@/hooks/usePageModal'
 
 // 对modalConfig进行操作
-const modalConfigRef = computed(() => {
+const modalConfigRef = computed<any>(() => {
   const mainStore = useMainStore()
   const departments = mainStore.entireDepartments.map((item) => {
     return { label: item.name, value: item.id }
   })
   modalConfig.formItems.forEach((item) => {
     if (item.prop === 'parentId') {
-      item.options.push(...departments)
+      item.options!.push(...departments)
     }
   })
 

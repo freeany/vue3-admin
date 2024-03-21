@@ -1,6 +1,4 @@
-import type { IModalConfig } from '@/components/page-modal/type'
-
-const modalConfig: IModalConfig = {
+const modalConfig = {
   pageName: 'department',
   header: {
     newTitle: '新建部门',
@@ -24,7 +22,7 @@ const modalConfig: IModalConfig = {
       label: '上级部门',
       prop: 'parentId',
       placeholder: '请选择上级部门',
-      options: []
+      options: [] as any
     }
   ]
 }

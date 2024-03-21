@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 
-export let firstRoute: RouteRecordRaw | undefined = undefined
+export let firstRoute: any = undefined
 
 function loadLocalRoutes() {
   // 1.加载所有的模板

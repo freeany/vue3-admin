@@ -49,9 +49,9 @@ import { localCache } from '@/utils/cache'
 
 const router = useRouter()
 function handleExitClick() {
-  localCache.deleteCache('token')
-  localCache.deleteCache('userInfo')
-  localCache.deleteCache('userMenus')
+  localCache.removeCache('token')
+  localCache.removeCache('userInfo')
+  localCache.removeCache('userMenus')
   router.push('/login')
 }
 </script>

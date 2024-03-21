@@ -1,4 +1,4 @@
-const modalConfig = {
+const modalConfig: any = {
   pageName: 'role',
   header: {
     newTitle: '新建角色',

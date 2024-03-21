@@ -11,11 +11,7 @@
       @new-click="handleNewClick"
       @edit-click="handleEditClick"
     />
-    <page-modal
-      :modal-config="modalConfig"
-      :other-info="otherInfo"
-      ref="modalRef"
-    >
+    <page-modal :modal-config="modalConfig" :other-info="otherInfo" ref="modalRef">
       <template #menulist>
         <el-tree
           ref="treeRef"
@@ -47,14 +43,11 @@ import modalConfig from './config/modal.config'
 import usePageContent from '@/hooks/usePageContent'
 import usePageModal from '@/hooks/usePageModal'
 import useMainStore from '@/store/main/main'
-import { mapMenuListToIds } from '@/utils/map-menus'
+import { mapMenuToIds } from '@/utils/map-menu'
 
 // 逻辑关系
 const { contentRef, handleQueryClick, handleResetClick } = usePageContent()
-const { modalRef, handleNewClick, handleEditClick } = usePageModal(
-  newCallback,
-  editCallback
-)
+const { modalRef, handleNewClick, handleEditClick } = usePageModal(newCallback, editCallback)
 
 // 获取完整的菜单
 const mainStore = useMainStore()
@@ -74,7 +67,7 @@ function newCallback() {
 }
 function editCallback(itemData: any) {
   nextTick(() => {
-    const menuIds = mapMenuListToIds(itemData.menuList)
+    const menuIds = mapMenuToIds(itemData.menuList)
     treeRef.value?.setCheckedKeys(menuIds)
   })
 }
