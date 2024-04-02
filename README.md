@@ -392,6 +392,12 @@ module.exports = {
 
 ![image-20240402210100794](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402210100794.png)
 
+修改pre-commit
+
+```bash
+npx lint-staged --edit $1
+```
+
 
 
 
