@@ -395,10 +395,15 @@ module.exports = {
 修改pre-commit
 
 ```bash
-npx lint-staged --edit $1
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx lint-staged
 ```
 
+执行git commit测试
 
+![image-20240402210901295](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402210901295.png)
 
 
 
