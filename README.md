@@ -225,6 +225,28 @@ npm install prettier -D
 
 https://juejin.cn/post/7325243117861879818#heading-19
 
+
+
+### 配置husky
+
+`husky` 是一个为 git 客户端增加 `hook` 的工具。安装后，它会自动在仓库中的 `.git/` 目录下增加相应的钩子；比如 `pre-commit` 钩子就会在你执行 `git commit` 的触发。即：`git hook`可以在`git` 在执行某个事件之前或之后进行一些其他额外的操作。
+
+下面是常用的hooks：
+
+>1. pre-commit：钩子在提交信息前运行命令。
+>
+>2. prepare-commit-msg：钩子在启动提交信息编辑器之前，默认信息被创建之后运行。
+>
+>3. commit-msg：这个钩子在 `git commit` 和 `git merge` 命令触发，会传递一个参数，该参数为存放当前 commit 消息的临时文件路径。 如果该钩子脚本以非零值退出，Git 将放弃提交， 因此，可以用来在提交通过前验证项目状态或提交信息。
+>
+>4. post-commit：钩子在整个提交过程完成后运行
+
+
+
+
+
+
+
 ### 规范git提交代码
 
 - **commitlint**：代码提交检测，检测git commit 内容是否符合定义的规范
