@@ -223,13 +223,54 @@ npm install prettier -D
 
 ## 约定式提交规范
 
-- git提交规范化工具commitizen
+https://juejin.cn/post/7325243117861879818#heading-19
 
-  `commitizen` 仓库名为 [cz-cli](https://github.com/commitizen/cz-cli) ，它提供了一个 `git cz` 的指令用于代替 `git commit`，简单一句话介绍它：
+### 规范git提交代码
 
-  > 当你使用 `commitizen` 进行代码提交（git commit）时，`commitizen` 会提交你在提交时填写所有必需的提交字段！
+- **commitlint**：代码提交检测，检测git commit 内容是否符合定义的规范
+- **commitizen**：用于自动化提交信息的工具，帮助开发者在每次提交代码时自动生成符合规范的提交信息，使用Commitizen可以使得团队的提交信息更加统一和规范。
 
-  
+1. 安装`pnpm add @commitlint/config-conventional @commitlint/cli -D`
+
+2. 根目录下添加 `commitlint.config.js`文件
+
+```ts
+export default {
+  extends: ['@commitlint/config-conventional'],
+  rules: {
+    // type 类型定义
+    'type-enum': [
+      2, // 2 表示必须
+      'always',
+      [
+        'feat', // 新功能 feature
+        'fix', // 修复 bug
+        'merge', // 合并分支
+        'docs', // 文档注释
+        'style', // 代码格式(不影响代码运行的变动)
+        'refactor', // 重构(既不增加新功能，也不是修复bug)
+        'perf', // 性能优化
+        'test', // 增加测试
+        'chore', // 构建过程或辅助工具的变动
+        'revert', // 回退
+        'build' // 打包
+      ]
+    ],
+    // subject 大小写不做校验
+    'subject-case': [0]
+  }
+}
+```
+
+在`packjson.json`中添加
+
+```json
+"scripts": {
+    "commitlint": "commitlint --config commitlint.config.cjs -e -V"
+}
+```
+
+此时如果不规范的提交代码msg，那么可以会报错
 
 
 
