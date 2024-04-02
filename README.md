@@ -291,7 +291,7 @@ export default {
 1. 安装`pnpm install husky --save-dev`
 2. `npx husky init`
 3. 删除`pre-commit`文件
-4. 在命令行中输入 `npx --no -- commitlint --edit $1` 
+4. 在命令行中输入 `echo "npx --no -- commitlint --edit \$1" > .husky/commit-msg` 
 
 此时如果不规范的提交代码msg，会报错.
 
@@ -366,9 +366,14 @@ module.exports = {
 
 此时执行`npm run commit`会有友好地提示：
 
+<img src="/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402204414244.png" alt="image-20240402204414244" style="zoom:50%;" />
 
+### lint-staged + pre-commit 自动修复格式错误
 
+- pre-commit 可以检测提交时代码规范
+- lint-staged可以自动修复代码格式错误
 
+在命令行输入: ``
 
 ## 开发环境和生产环境
 
