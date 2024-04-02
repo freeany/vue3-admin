@@ -373,7 +373,28 @@ module.exports = {
 - pre-commit 可以检测提交时代码规范
 - lint-staged可以自动修复代码格式错误
 
-在命令行输入: ``
+1. 在命令行输入: `echo "npx --no -- lint --edit \$1" > .husky/pre-commit`
+
+2. 修改pre-commit
+
+   `npm run lint --edit $1`
+
+   
+   
+
+此时执行git commit 
+
+![image-20240402205714600](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402205714600.png)
+
+但是如果是warning仍会通过。
+
+ 如果是error 则不会通过
+
+![image-20240402210100794](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402210100794.png)
+
+
+
+
 
 ## 开发环境和生产环境
 

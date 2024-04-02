@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-const name = "aa"
+const name = 'aaa'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 </script>
 
