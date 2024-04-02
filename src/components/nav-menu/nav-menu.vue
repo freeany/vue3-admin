@@ -50,7 +50,7 @@ const userMenus = loginStore.userMenus
 // 2.默认值的问题
 const route = useRoute()
 const currentMenu = mapPathToMenu(userMenus, route.path)
-const defaultValue = ref<string>(currentMenu.id + '')
+const defaultValue = ref<string>(currentMenu?.id + '')
 
 // 2.监听item点击
 const router = useRouter()

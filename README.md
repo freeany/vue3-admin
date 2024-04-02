@@ -147,6 +147,43 @@ npm install prettier -D
 
 
 
+- 配置文件
+
+  ```ts
+  // ESLint 配置文件遵循 commonJS 的导出规则，所导出的对象就是 ESLint 的配置对象
+  // 文档：https://eslint.bootcss.com/docs/user-guide/configuring
+  module.exports = {
+    // 表示当前目录即为根目录，ESLint 规则将被限制到该目录下
+    root: true,
+    // env 表示启用 ESLint 检测的环境
+    env: {
+      // 在 node 环境下启动 ESLint 检测
+      node: true
+    },
+    // ESLint 中基础配置需要继承的配置
+    extends: ["plugin:vue/vue3-essential", "@vue/standard"],
+    // 解析器
+    parserOptions: {
+      parser: "babel-eslint"
+    },
+    // 需要修改的启用规则及其各自的错误级别
+    /**
+     * 错误级别分为三种：
+     * "off" 或 0 - 关闭规则
+     * "warn" 或 1 - 开启规则，使用警告级别的错误：warn (不会导致程序退出)
+     * "error" 或 2 - 开启规则，使用错误级别的错误：error (当被触发的时候，程序会退出)
+     */
+    rules: {
+      "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+      "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
+    }
+  };
+  ```
+
+  
+
+
+
 ### 防止eslint与perttier冲突的配置
 
 - eslint可能与prettier的规则冲突，但是我们需要以prettier为准，因为我们最后想要生成的代码是prettier定义的。所以需要在安装一个插件。
@@ -183,6 +220,16 @@ npm install prettier -D
 可以看看这篇文章：https://juejin.cn/post/7156893291726782500#heading-8
 
 
+
+## 约定式提交规范
+
+- git提交规范化工具commitizen
+
+  `commitizen` 仓库名为 [cz-cli](https://github.com/commitizen/cz-cli) ，它提供了一个 `git cz` 的指令用于代替 `git commit`，简单一句话介绍它：
+
+  > 当你使用 `commitizen` 进行代码提交（git commit）时，`commitizen` 会提交你在提交时填写所有必需的提交字段！
+
+  
 
 
 
