@@ -227,26 +227,6 @@ https://juejin.cn/post/7325243117861879818#heading-19
 
 
 
-### 配置husky
-
-`husky` 是一个为 git 客户端增加 `hook` 的工具。安装后，它会自动在仓库中的 `.git/` 目录下增加相应的钩子；比如 `pre-commit` 钩子就会在你执行 `git commit` 的触发。即：`git hook`可以在`git` 在执行某个事件之前或之后进行一些其他额外的操作。
-
-下面是常用的hooks：
-
->1. pre-commit：钩子在提交信息前运行命令。
->
->2. prepare-commit-msg：钩子在启动提交信息编辑器之前，默认信息被创建之后运行。
->
->3. commit-msg：这个钩子在 `git commit` 和 `git merge` 命令触发，会传递一个参数，该参数为存放当前 commit 消息的临时文件路径。 如果该钩子脚本以非零值退出，Git 将放弃提交， 因此，可以用来在提交通过前验证项目状态或提交信息。
->
->4. post-commit：钩子在整个提交过程完成后运行
-
-
-
-
-
-
-
 ### 规范git提交代码
 
 - **commitlint**：代码提交检测，检测git commit 内容是否符合定义的规范
@@ -292,7 +272,101 @@ export default {
 }
 ```
 
-此时如果不规范的提交代码msg，那么可以会报错
+此时如果不规范的提交代码msg，也不会报错， 因为缺少了git hook。
+
+### 配置husky
+
+`husky` 是一个为 git 客户端增加 `hook` 的工具。安装后，它会自动在仓库中的 `.git/` 目录下增加相应的钩子；比如 `pre-commit` 钩子就会在你执行 `git commit` 的触发。即：`git hook`可以在`git` 在执行某个事件之前或之后进行一些其他额外的操作。
+
+下面是常用的hooks：
+
+>1. pre-commit：钩子在提交信息前运行命令。
+>
+>2. prepare-commit-msg：钩子在启动提交信息编辑器之前，默认信息被创建之后运行。
+>
+>3. commit-msg：这个钩子在 `git commit` 和 `git merge` 命令触发，会传递一个参数，该参数为存放当前 commit 消息的临时文件路径。 如果该钩子脚本以非零值退出，Git 将放弃提交， 因此，可以用来在提交通过前验证项目状态或提交信息。
+>
+>4. post-commit：钩子在整个提交过程完成后运行
+
+1. 安装`pnpm install husky --save-dev`
+2. `npx husky init`
+3. 删除`pre-commit`文件
+4. 在命令行中输入 `npx --no -- commitlint --edit $1` 
+
+此时如果不规范的提交代码msg，会报错.
+
+![image-20240402203859960](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402203859960.png)
+
+### 配置commitizen
+
+配置commitizen后，帮助开发者在**每次提交代码**时**自动生成**符合规范的提交信息，提示每个subjet的含义。
+
+1. 安装
+
+```bash
+pnpm add  commitizen cz-customizable -D
+```
+
+2. 配置packjson.jso
+
+```json
+"scripts": {
+  "commit": "git-cz",
+}
+// 这里自定义commitizen，使用git-cz执行git commit命令
+"config": {
+  "commitizen": {
+    "path": "./node_modules/cz-customizable"
+  },
+  "cz-customizable": {
+    "config": "./.cz-config.cjs"
+  }
+}
+```
+
+3. 在根目录创建的.cz-config.cjs文件
+
+```json
+// 自定义commit提示内容
+module.exports = {
+  types: [
+    { value: 'feat', name: 'feat:     新功能' },
+    { value: 'fix', name: 'fix:      修复' },
+    { value: 'docs', name: 'docs:     文档变更' },
+    { value: 'style', name: 'style:    代码格式(不影响代码运行的变动)' },
+    {
+      value: 'refactor',
+      name: 'refactor: 重构(既不是增加feature，也不是修复bug)'
+    },
+    { value: 'perf', name: 'perf:     性能优化' },
+    { value: 'test', name: 'test:     增加测试' },
+    { value: 'chore', name: 'chore:    构建过程或辅助工具的变动' },
+    { value: 'revert', name: 'revert:   回退' },
+    { value: 'build', name: 'build:    打包' }
+  ],
+  // override the messages, defaults are as follows
+  messages: {
+    type: '请选择提交类型:',
+    // scope: '请输入文件修改范围(可选):',
+    // used if allowCustomScopes is true
+    customScope: '请输入修改范围(可选):',
+    subject: '请简要描述提交(必填):',
+    body: '请输入详细描述(可选，待优化去除，跳过即可):',
+    // breaking: 'List any BREAKING CHANGES (optional):\n',
+    footer: '请输入要关闭的issue(待优化去除，跳过即可):',
+    confirmCommit: '确认使用以上信息提交？(y/n/e/h)'
+  },
+  allowCustomScopes: true,
+  // allowBreakingChanges: ['feat', 'fix'],
+  skipQuestions: ['body', 'footer'],
+  // limit subject length, commitlint默认是72
+  subjectLimit: 72
+}
+```
+
+此时执行`npm run commit`会有友好地提示：
+
+
 
 
 

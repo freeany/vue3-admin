@@ -12,7 +12,6 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "commit": "git cz",
-    "commitlint": "commitlint --config commitlint.config.js -e -V",
     "prepare": "husky"
   },
   "dependencies": {
