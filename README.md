@@ -266,7 +266,7 @@ export default {
 
 ```json
 "scripts": {
-    "commitlint": "commitlint --config commitlint.config.cjs -e -V"
+    "commitlint": "commitlint --config commitlint.config.js -e -V"
 }
 ```
 
