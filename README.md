@@ -643,6 +643,140 @@ app.use(icons)
 // ...
 ```
 
+3. 使用
+
+```vue
+<el-icon><UserFilled /></el-icon>
+```
+
+
+
+## vite中使用外部svg图标
+
+1. 安装
+
+   ```ts
+   pnpm install vite-plugin-svg-icons -D
+   ```
+
+2. 在vite.config.js中配置
+
+   ```ts
+   import { fileURLToPath, URL } from 'node:url'
+   import { defineConfig } from 'vite'
+   import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+   // https://vitejs.dev/config/
+   export default defineConfig({
+     plugins: [
+       // ...
+       createSvgIconsPlugin({
+         // 指定需要缓存的图标文件夹
+         iconDirs: [fileURLToPath(new URL('./src/icons/svg', import.meta.url))],
+         // 指定symbolId格式
+         symbolId: 'icon-[dir]-[name]'
+   
+         /**
+          * 自定义插入位置
+          * @default: body-last
+          */
+         // inject?: 'body-last' | 'body-first'
+   
+         /**
+          * custom dom id
+          * @default: __svg__icons__dom__
+          */
+         // customDomId: '__svg__icons__dom__',
+       })
+     ],
+   })
+   ```
+
+3. 创建svg-icon组件
+
+   ```vue
+   <template>
+     <svg aria-hidden="true" class="svg-icon" :width="props.size" :height="props.size">
+       <use :xlink:href="symbolId" :fill="props.color" />
+     </svg>
+   </template>
+   
+   <script setup>
+   import { computed } from 'vue'
+   const props = defineProps({
+     prefix: {
+       type: String,
+       default: 'icon'
+     },
+     name: {
+       type: String,
+       required: true
+     },
+     color: {
+       type: String,
+       default: '#333'
+     },
+     size: {
+       type: String,
+       default: '1em'
+     }
+   })
+   
+   const symbolId = computed(() => `#${props.prefix}-${props.name}`)
+   </script>
+   ```
+
+4. 目录结构
+
+   <img src="/Users/lihaoran/Library/Application Support/typora-user-images/image-20240403192246312.png" alt="image-20240403192246312" style="zoom:50%;" />
+
+5. main.ts中注册
+
+   ```ts
+   // svg图标
+   import 'virtual:svg-icons-register'
+   import svgIcon from '@/components/svg-icon/index.vue'
+   
+   app.component('svg-icon', svgIcon)
+   ```
+
+6. 使用
+
+   ```vue
+   <svg-icon :name="'article'" />
+   ```
+
+## 通用后台登录方案解析
+
+1. axios模块
+2. 接口请求模块
+3. 登录请求动作
+4. Token缓存
+5. 登录鉴权
+
+
+
+## vscode + ts
+
+> 在vscode中配置tsconfig.json中，会时常会有一些点击ctrl识别不到的情况出现，这时候需要让vscode去识别这些配置。将路径改为一个错误的路径，唤醒路径。
+
+<img src="/Users/lihaoran/Library/Application Support/typora-user-images/image-20240404214452043.png" alt="image-20240404214452043" style="zoom:50%;" />
+
+点击不了❌
+
+改为错误的路径， 唤醒智能识别
+
+<img src="/Users/lihaoran/Library/Application Support/typora-user-images/image-20240404214532078.png" alt="image-20240404214532078" style="zoom:50%;" />
+
+在改为正确的，此时有了提示：
+
+<img src="/Users/lihaoran/Library/Application Support/typora-user-images/image-20240404214616963.png" alt="image-20240404214616963" style="zoom:50%;" />
+
+
+
+## Q
+
+Q: 在点击按钮发送请求的按钮上是不是都要加loading？
+
 
 
 ## App.vue整体搭建
