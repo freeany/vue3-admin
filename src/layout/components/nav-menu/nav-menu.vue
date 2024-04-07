@@ -2,7 +2,7 @@
   <div class="nav-menu">
     <div class="logo">
       <img class="img" src="@/assets/img/logo.svg" alt="logo" />
-      <span v-show="!isFold" class="title">弘源管理系统</span>
+      <span v-show="!isFold" class="logo-title">弘源管理系统</span>
     </div>
     <el-menu
       :default-active="defaultValue"
@@ -67,23 +67,20 @@ function handleItemClick(item: any) {
 
 .logo {
   display: flex;
-  height: 28px;
-  padding: 12px 10px 8px 10px;
-  flex-direction: row;
-  justify-content: flex-start;
+  height: 38px;
+  line-height: 38px;
   align-items: center;
   overflow: hidden;
 
   .img {
-    height: 100%;
     margin: 0 10px;
+    width: 10%;
   }
 
-  .title {
+  .logo-title {
     font-size: 16px;
     font-weight: 700;
     color: white;
-    white-space: nowrap;
   }
 }
 

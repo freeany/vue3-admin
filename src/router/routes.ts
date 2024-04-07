@@ -14,7 +14,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/main',
     name: 'main',
-    component: () => import('../views/main/index.vue'),
+    component: () => import('../layout/index.vue'),
     children: [
       {
         path: 'analysis/dashboard',
