@@ -19,3 +19,5 @@ export async function installRouter(app: App) {
   app.use(router)
   await router.isReady() // https://router.vuejs.org/zh/api/index.html#isready
 }
+
+export default router

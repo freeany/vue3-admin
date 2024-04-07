@@ -10,13 +10,17 @@ import './assets/css/index.less'
 import App from './App.vue'
 import './assets/css/index.less'
 import icons from './global/register-icons'
-import router from '@/router'
+import { installRouter } from '@/router'
 import store from './store'
 
-const app = createApp(App)
-// 全局注册element-ui icon
-app.use(icons)
-app.use(store)
-app.use(router)
-app.component('svg-icon', svgIcon)
-app.mount('#app')
+async function setupApp() {
+  const app = createApp(App)
+  // 全局注册element-ui icon
+  app.use(icons)
+  app.use(store)
+  installRouter(app)
+  app.component('svg-icon', svgIcon)
+  app.mount('#app')
+}
+
+setupApp()

@@ -3,7 +3,8 @@ import { localCache } from '@/utils/cache'
 import { LOGIN_TOKEN } from '@/global/constants'
 
 const title = import.meta.env.VITE_APP_NAME
-
+// 白名单
+const whiteList = ['/login']
 export function setupRouterGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     // 判断有无TOKEN,登录鉴权
@@ -11,10 +12,13 @@ export function setupRouterGuard(router: Router) {
     if (!isLogin) {
       if (to.name === 'login') next()
 
-      if (to.name !== 'login') {
+      if (whiteList.indexOf(to.path) > -1) {
+        next()
+      } else {
         const redirect = to.name === '404' ? undefined : to.fullPath
         next({ path: '/login', query: { redirect } })
       }
+
       return false
     }
 

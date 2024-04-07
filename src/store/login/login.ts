@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { accountLoginRequest, getUserInfoById, getUserMenusByRoleId } from '@/service/login/login'
 import type { IAccount } from '@/types'
 import { localCache } from '@/utils/cache'
-import { mapMenuToPersssions, mapMenuToRoutes } from '@/utils/map-menu'
+import { mapMenuToPersssions } from '@/utils/map-menu'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
 import useMainStore from '../main/main'
@@ -53,8 +53,7 @@ const useLoginStore = defineStore('login', {
       this.permissions = permissions
 
       // 重要: 动态的添加路由
-      const routes = mapMenuToRoutes(userMenus)
-      routes.forEach((route) => router.addRoute('main', route))
+      // routes.forEach((route) => router.addRoute('main', route))
 
       // 5.页面跳转(main页面)
       router.push('/main')
@@ -79,8 +78,7 @@ const useLoginStore = defineStore('login', {
         this.permissions = permissions
 
         // 3.动态添加路由
-        const routes = mapMenuToRoutes(userMenus)
-        routes.forEach((route) => router.addRoute('main', route))
+        // routes.forEach((route) => router.addRoute('main', route))
       }
     }
   }
