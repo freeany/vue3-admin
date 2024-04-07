@@ -44,15 +44,11 @@
 </template>
 
 <script setup lang="ts" name="header-info">
-import { useRouter } from 'vue-router'
-import { localCache } from '@/utils/cache'
+import useLoginStore from '@/store/login/login'
+const loginStore = useLoginStore()
 
-const router = useRouter()
 function handleExitClick() {
-  localCache.removeCache('token')
-  localCache.removeCache('userInfo')
-  localCache.removeCache('userMenus')
-  router.push('/login')
+  loginStore.logout()
 }
 </script>
 

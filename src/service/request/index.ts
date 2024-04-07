@@ -63,14 +63,18 @@ class HYRequest {
     return new Promise<T>((resolve, reject) => {
       this.instance
         .request<any, T>(config)
+
         .then((res) => {
-          // 单词响应的成功拦截处理
+          // 响应的成功拦截处理
           if (config.interceptors?.responseSuccessFn) {
             res = config.interceptors.responseSuccessFn(res)
           }
           resolve(res)
         })
         .catch((err) => {
+          if (config.interceptors?.responseFailureFn) {
+            err = config.interceptors.responseFailureFn(err)
+          }
           reject(err)
         })
     })

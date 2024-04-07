@@ -58,7 +58,6 @@ const useLoginStore = defineStore('login', {
       // 5.页面跳转(main页面)
       router.push('/main')
     },
-
     loadLocalCacheAction() {
       // 1.用户进行刷新默认加载数据
       const token = localCache.getCache(LOGIN_TOKEN)
@@ -80,6 +79,12 @@ const useLoginStore = defineStore('login', {
         // 3.动态添加路由
         // routes.forEach((route) => router.addRoute('main', route))
       }
+    },
+    logout() {
+      localCache.removeCache('token')
+      localCache.removeCache('userInfo')
+      localCache.removeCache('userMenus')
+      router.push('/login')
     }
   }
 })

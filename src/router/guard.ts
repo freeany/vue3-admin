@@ -10,7 +10,10 @@ export function setupRouterGuard(router: Router) {
     // 判断有无TOKEN,登录鉴权
     const isLogin = Boolean(localCache.getCache(LOGIN_TOKEN))
     if (!isLogin) {
-      if (to.name === 'login') next()
+      if (to.name === 'login') {
+        next()
+        return false
+      }
 
       if (whiteList.indexOf(to.path) > -1) {
         next()
