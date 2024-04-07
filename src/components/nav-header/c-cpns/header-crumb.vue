@@ -14,8 +14,8 @@ import { useRoute } from 'vue-router'
 import { mapPathToBreadcrumbs } from '@/utils/map-menu'
 import useLoginStore from '@/store/login/login'
 
+const route = useRoute()
 const breadcrumbs = computed(() => {
-  const route = useRoute()
   const loginStore = useLoginStore()
   const breadcrumbs = mapPathToBreadcrumbs(loginStore.userMenus, route.path)
   return breadcrumbs

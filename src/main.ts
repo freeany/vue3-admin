@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+
 import 'normalize.css'
 
 // svg图标
@@ -13,7 +14,7 @@ import router from '@/router'
 import store from './store'
 
 const app = createApp(App)
-
+// 全局注册element-ui icon
 app.use(icons)
 app.use(store)
 app.use(router)
