@@ -837,11 +837,59 @@ export { localCache, sessionCache }
 
 
 
+## 前端登陆鉴权操作
+
+**登录鉴权** 的定义：
+
+> 当用户未登陆时，不允许进入除 `login` 之外的其他页面。
+>
+> 用户登录后，`token` 未过期之前，不允许进入 `login` 页面
+
+而想要实现这个功能，那么最好的方式就是通过 [路由守卫](https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB) 来进行实现。
+
+```ts
+import type { Router } from 'vue-router'
+import { localCache } from '@/utils/cache'
+import { LOGIN_TOKEN } from '@/global/constants'
+
+const title = import.meta.env.VITE_APP_NAME
+// 白名单
+const whiteList = ['/login']
+export function setupRouterGuard(router: Router) {
+  router.beforeEach(async (to, from, next) => {
+    // 判断有无TOKEN,登录鉴权
+    const isLogin = Boolean(localCache.getCache(LOGIN_TOKEN))
+    if (!isLogin) {
+      if (to.name === 'login') next()
+
+      if (whiteList.indexOf(to.path) > -1) {
+        next()
+      } else {
+        const redirect = to.name === '404' ? undefined : to.fullPath
+        next({ path: '/login', query: { redirect } })
+      }
+      return false
+    }
+
+    next()
+  })
+
+  router.afterEach((to) => {
+    // 修改网页标题
+    document.title = `${to.meta.title} - ${title}`
+  })
+}
+```
+
+
+
 ## 权限控制
 
 根据登录用户的不同，呈现不同的后台管理系统内容（具备不同的操作权限）。
 
 一般来说B端项目都是采用了RBAC权限设计。即role based access control（基本角色的访问控制）。
+
+
 
 
 

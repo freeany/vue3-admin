@@ -56,7 +56,7 @@ function handleExitClick() {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .header-info {
   display: flex;
   align-items: center;

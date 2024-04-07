@@ -71,7 +71,7 @@ function handleQueryClick() {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .search {
   background-color: #fff;
   padding: 20px;

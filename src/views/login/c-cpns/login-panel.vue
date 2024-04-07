@@ -68,7 +68,7 @@ function handleLoginBtnClick() {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .login-panel {
   width: 330px;
   margin-bottom: 150px;

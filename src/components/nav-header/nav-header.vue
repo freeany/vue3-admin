@@ -25,7 +25,7 @@ function handleFoldClick() {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .nav-header {
   display: flex;
   align-items: center;

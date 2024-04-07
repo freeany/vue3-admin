@@ -52,6 +52,15 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        // 两种方式都可以
+        additionalData: '@import "@/styles/variables.scss";'
+        // additionalData: '@use "@/assets/scss/global.scss" as *;'
+      }
+    }
+  },
   server: {
     proxy: {
       '/api': {

@@ -18,7 +18,6 @@ export function setupRouterGuard(router: Router) {
         const redirect = to.name === '404' ? undefined : to.fullPath
         next({ path: '/login', query: { redirect } })
       }
-
       return false
     }
 

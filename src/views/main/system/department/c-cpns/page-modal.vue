@@ -89,7 +89,7 @@ function handleConfirmClick() {
 defineExpose({ setModalVisible })
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .form {
   padding: 0 20px;
 }

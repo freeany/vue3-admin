@@ -155,7 +155,7 @@ defineExpose({
 })
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .content {
   margin-top: 20px;
   padding: 20px;

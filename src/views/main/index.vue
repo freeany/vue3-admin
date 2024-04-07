@@ -28,7 +28,7 @@ function handleFoldChange(flag: boolean) {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .main {
   height: 100%;
 }

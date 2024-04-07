@@ -19,7 +19,7 @@ const analysisStore = useAnalysisStore()
 analysisStore.fetchDashboardDataAction()
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .el-row {
   margin-bottom: 20px;
 }

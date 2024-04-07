@@ -59,7 +59,7 @@ function handleItemClick(item: any) {
 }
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .nav-menu {
   height: 100%;
   background-color: #001529;

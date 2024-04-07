@@ -46,7 +46,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped lang="less">
+<style scoped lang="scss">
 .count-card {
   display: flex;
   flex-direction: column;

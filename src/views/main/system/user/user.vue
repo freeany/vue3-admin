@@ -32,7 +32,7 @@ function handleEditClick(itemData: any) {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .user {
   border-radius: 8px;
   overflow: hidden;

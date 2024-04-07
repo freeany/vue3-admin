@@ -8,7 +8,7 @@
 import LoginPanel from './c-cpns/login-panel.vue'
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .login {
   display: flex;
   align-items: center;

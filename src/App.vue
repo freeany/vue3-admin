@@ -7,11 +7,10 @@
 </template>
 
 <script lang="ts" setup>
-const name = 'aaa'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .app {
   width: 100vw;
   height: 100vh;

@@ -26,7 +26,7 @@ module.exports = {
   },
   allowCustomScopes: true,
   // 跳过问题
-  // skipQuestions: ['body', 'footer'],
+  skipQuestions: ['body', 'footer'],
   // subject文字长度默认是72
   subjectLimit: 72
 }

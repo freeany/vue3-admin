@@ -1,0 +1,97 @@
+@import './variables.scss';
+@import './mixin.scss';
+@import './sidebar.scss';
+@import './element.scss';
+@import './transition.scss';
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family:
+    Helvetica Neue,
+    Helvetica,
+    PingFang SC,
+    Hiragino Sans GB,
+    Microsoft YaHei,
+    Arial,
+    sans-serif;
+}
+
+#app {
+  height: 100%;
+}
+/* reset.css样式重置文件 */
+/* margin/padding重置 */
+body,
+h1,
+h2,
+h3,
+ul,
+ol,
+li,
+p,
+dl,
+dt,
+dd {
+  padding: 0;
+  margin: 0;
+}
+
+/* a元素重置 */
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+/* img的vertical-align重置 */
+img {
+  vertical-align: top;
+}
+
+/* ul, ol, li重置 */
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+/* 对斜体元素重置 */
+i,
+em {
+  font-style: normal;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: ' ';
+    clear: both;
+    height: 0;
+  }
+}
