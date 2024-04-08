@@ -1,7 +1,7 @@
 <template>
   <div class="header-crumbs">
     <el-breadcrumb separator="/">
-      <template v-for="(item, index) in breadcrumbs" :key="index">
+      <template v-for="item in breadcrumbs" :key="item.path">
         <el-breadcrumb-item :to="item.path">{{ item.name }}</el-breadcrumb-item>
       </template>
     </el-breadcrumb>
@@ -9,17 +9,29 @@
 </template>
 
 <script setup lang="ts" name="header-crumbs">
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { mapPathToBreadcrumbs } from '@/utils/map-menu'
-import useLoginStore from '@/store/login/login'
+import { ref, watch } from 'vue'
+import { useRoute, type RouteLocationMatched } from 'vue-router'
 
 const route = useRoute()
-const breadcrumbs = computed(() => {
-  const loginStore = useLoginStore()
-  const breadcrumbs = mapPathToBreadcrumbs(loginStore.userMenus, route.path)
-  return breadcrumbs
-})
+
+// 生成数组数据
+const breadcrumbs = ref<RouteLocationMatched[]>([])
+const getBreadcrumbData = () => {
+  console.log(route.matched, '/route.matchedroute.matched')
+
+  breadcrumbs.value = route.matched
+}
+
+// 监听路由变化时触发
+watch(
+  route,
+  () => {
+    getBreadcrumbData()
+  },
+  {
+    immediate: true
+  }
+)
 </script>
 
 <style scoped lang="scss"></style>

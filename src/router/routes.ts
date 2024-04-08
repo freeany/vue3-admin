@@ -14,14 +14,17 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/main',
     name: 'main',
+    redirect: '/main/analysis/overview',
     component: () => import('../layout/index.vue'),
     children: [
       {
         path: 'analysis/dashboard',
+        name: 'dashboard',
         component: () => import('@/views/main/analysis/dashboard/dashboard.vue')
       },
       {
         path: 'analysis/overview',
+        name: 'overview',
         component: () => import('@/views/main/analysis/overview/overview.vue')
       },
       {
@@ -50,10 +53,12 @@ export const routes: RouteRecordRaw[] = [
       },
       {
         path: 'system/user',
+        name: 'user',
         component: () => import('@/views/main/system/user/user.vue')
       },
       {
         path: 'system/role',
+        name: 'role',
         component: () => import('@/views/main/system/role/role.vue')
       },
       {
