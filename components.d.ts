@@ -43,6 +43,7 @@ declare module 'vue' {
     ElTabPane: (typeof import('element-plus/es'))['ElTabPane']
     ElTabs: (typeof import('element-plus/es'))['ElTabs']
     ElTooltip: (typeof import('element-plus/es'))['ElTooltip']
+    LangSelect: (typeof import('./src/components/LangSelect/index.vue'))['default']
     LineEchart: (typeof import('./src/components/page-charts/src/line-echart.vue'))['default']
     MapEchart: (typeof import('./src/components/page-charts/src/map-echart.vue'))['default']
     PageContent: (typeof import('./src/components/page-content/page-content.vue'))['default']

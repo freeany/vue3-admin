@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { localCache } from '@/utils/cache'
+import { localCache } from '@/utils/storage'
 import { ref, watch } from 'vue'
 import PaneAccount from './pane-account.vue'
 import PanePhone from './pane-phone.vue'
@@ -53,9 +53,9 @@ enum LoginType {
 }
 
 const activeName = ref(LoginType.account)
-const isRemPwd = ref<boolean>(localCache.getCache('isRemPwd') ?? false)
+const isRemPwd = ref<boolean>(localCache.getItem('isRemPwd') ?? false)
 watch(isRemPwd, (newValue) => {
-  localCache.setCache('isRemPwd', newValue)
+  localCache.setItem('isRemPwd', newValue)
 })
 const accountRef = ref<InstanceType<typeof PaneAccount>>()
 
@@ -96,3 +96,4 @@ function handleLoginBtnClick() {
   }
 }
 </style>
+@/utils/storage

@@ -1,5 +1,5 @@
 import type { Router } from 'vue-router'
-import { localCache } from '@/utils/cache'
+import { localCache } from '@/utils/storage'
 import { LOGIN_TOKEN } from '@/global/constants'
 
 const title = import.meta.env.VITE_APP_NAME
@@ -8,7 +8,7 @@ const whiteList = ['/login']
 export function setupRouterGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     // 判断有无TOKEN,登录鉴权
-    const isLogin = Boolean(localCache.getCache(LOGIN_TOKEN))
+    const isLogin = Boolean(localCache.getItem(LOGIN_TOKEN))
     if (!isLogin) {
       if (to.name === 'login') {
         next()

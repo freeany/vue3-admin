@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { accountLoginRequest, getUserInfoById, getUserMenusByRoleId } from '@/service/login/login'
 import type { IAccount } from '@/types'
-import { localCache } from '@/utils/cache'
+import { localCache } from '@/utils/storage'
 import { mapMenuToPersssions } from '@/utils/map-menu'
 import router from '@/router'
 import { LOGIN_TOKEN } from '@/global/constants'
@@ -17,7 +17,7 @@ interface ILoginState {
 const useLoginStore = defineStore('login', {
   // 如何制定state的类型
   state: (): ILoginState => ({
-    token: localCache.getCache(LOGIN_TOKEN) || '',
+    token: localCache.getItem(LOGIN_TOKEN) || '',
     userInfo: {},
     userMenus: [],
     permissions: []
@@ -28,7 +28,7 @@ const useLoginStore = defineStore('login', {
       const loginResult = await accountLoginRequest(account)
       const id = loginResult.data.id
       this.token = loginResult.data.token
-      localCache.setCache(LOGIN_TOKEN, this.token)
+      localCache.setItem(LOGIN_TOKEN, this.token)
 
       // 2.获取登录用户的详细信息(role信息)
       const userInfoResult = await getUserInfoById(id)
@@ -41,8 +41,8 @@ const useLoginStore = defineStore('login', {
       this.userMenus = userMenus
 
       // 4.进行本地缓存
-      localCache.setCache('userInfo', userInfo)
-      localCache.setCache('userMenus', userMenus)
+      localCache.setItem('userInfo', userInfo)
+      localCache.setItem('userMenus', userMenus)
 
       // 5.请求所有roles/departments数据
       const mainStore = useMainStore()
@@ -60,9 +60,9 @@ const useLoginStore = defineStore('login', {
     },
     loadLocalCacheAction() {
       // 1.用户进行刷新默认加载数据
-      const token = localCache.getCache(LOGIN_TOKEN)
-      const userInfo = localCache.getCache('userInfo')
-      const userMenus = localCache.getCache('userMenus')
+      const token = localCache.getItem(LOGIN_TOKEN)
+      const userInfo = localCache.getItem('userInfo')
+      const userMenus = localCache.getItem('userMenus')
       if (token && userInfo && userMenus) {
         this.token = token
         this.userInfo = userInfo

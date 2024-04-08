@@ -14,7 +14,7 @@ export function getUserInfoById(id: number) {
   return hyRequest.get({
     url: `/users/${id}`
     // headers: {
-    //   Authorization: 'Bearer ' + localCache.getCache(LOGIN_TOKEN)
+    //   Authorization: 'Bearer ' + localCache.getItem(LOGIN_TOKEN)
     // }
   })
 }

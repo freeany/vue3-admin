@@ -41,19 +41,15 @@ trim_trailing_whitespace = false
 
 插件的运行规则：当打开新的编辑器、将选项卡切换到现有的编辑器或将焦点转移到已打开的编辑器时，都会激活此扩展。激活后，它使用[`editorconfig`](https://www.npmjs.com/package/editorconfig) 解析特定文件的配置，并应用任何相关的编辑器设置。
 
-*注意：某些设置只能在文件保存时应用，如上所述。*
+_注意：某些设置只能在文件保存时应用，如上所述。_
 
 插件的一些坑点：**charset**还没作用。
 
 最大的作用就是：charset 和 end_of_line ，其他的prettier可以完美接管。
 
-
-
 ## **prettier**美化
 
 > <a href="https://prettier.io/">prettier</a>是一款代码美化工具，可以快速帮我们建立并统一代码风格，在代码保存时进行格式化，支持JavaScript (including experimental features)、[JSX](https://facebook.github.io/jsx/)、[Angular](https://angular.io/)、[Vue](https://vuejs.org/)、[Flow](https://flow.org/)、[TypeScript](https://www.typescriptlang.org/)、CSS, [Less](http://lesscss.org/), and [SCSS](https://sass-lang.com/)、[HTML](https://en.wikipedia.org/wiki/HTML)、[Ember/Handlebars](https://handlebarsjs.com/)、[JSON](https://json.org/)、[GraphQL](https://graphql.org/)、[Markdown](https://commonmark.org/), [YAML](https://yaml.org/)。
-
-
 
 ### 安装
 
@@ -65,11 +61,11 @@ npm install prettier -D
 
 ### 配置.prettierrc文件:
 
-- useTabs:使用tab缩进还是空格缩进，选择false; 
-- tabWidth:tab是空格的情况下，是几个空格，选择2个; 
+- useTabs:使用tab缩进还是空格缩进，选择false;
+- tabWidth:tab是空格的情况下，是几个空格，选择2个;
 - printWidth:当行字符的⻓度，推荐80，也有人喜欢100或者120;
--  singleQuote:使用单引号还是双引号，选择true，使用单引号;
--  trailingComma:在多行输入的尾逗号是否添加，设置为 none ，比如对象类型的最后一个属性后 面是否加一个，;
+- singleQuote:使用单引号还是双引号，选择true，使用单引号;
+- trailingComma:在多行输入的尾逗号是否添加，设置为 none ，比如对象类型的最后一个属性后 面是否加一个，;
 - semi:语句末尾是否要加分号，默认值true，选择false表示不加;
 
 ```ts
@@ -124,8 +120,6 @@ npm install prettier -D
 
 详见：https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
 
-
-
 ## 使用**ESLint**检测
 
 1. 创建项目的时候脚手架已经帮我们配置好了`eslint`环境
@@ -145,8 +139,6 @@ npm install prettier -D
 5. eslint制定了代码的质量的规则，可帮助我们在代码捕获错误。
 6. <a href="https://github.com/prettier/eslint-config-prettier">eslint-config-prettier</a>可以不让eslint的风格选择妨碍我们使用 Prettier。
 
-
-
 - 配置文件
 
   ```ts
@@ -161,10 +153,10 @@ npm install prettier -D
       node: true
     },
     // ESLint 中基础配置需要继承的配置
-    extends: ["plugin:vue/vue3-essential", "@vue/standard"],
+    extends: ['plugin:vue/vue3-essential', '@vue/standard'],
     // 解析器
     parserOptions: {
-      parser: "babel-eslint"
+      parser: 'babel-eslint'
     },
     // 需要修改的启用规则及其各自的错误级别
     /**
@@ -174,20 +166,17 @@ npm install prettier -D
      * "error" 或 2 - 开启规则，使用错误级别的错误：error (当被触发的时候，程序会退出)
      */
     rules: {
-      "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-      "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
+      'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+      'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
     }
-  };
+  }
   ```
-
-  
-
-
 
 ### 防止eslint与perttier冲突的配置
 
 - eslint可能与prettier的规则冲突，但是我们需要以prettier为准，因为我们最后想要生成的代码是prettier定义的。所以需要在安装一个插件。
 - 安装 `pnpm add --dev @vue/eslint-config-prettier @rushstack/eslint-patch`
+
   - 我们在创建vue项目的时候，选择了prettier，那么这个插件就会被自动安装了.
 
 - 在.eslintrc文件中，添加插件
@@ -203,7 +192,7 @@ npm install prettier -D
 
 - <a href="https://github.com/vuejs/eslint-config-prettier">@vue/eslint-config-prettier</a> 的作用是：在vue项目中它禁用所有不必要或可能与 Prettier 冲突的规则。
 
-  - 这个插件其实也就是集成了[`eslint-plugin-prettier`](https://github.com/prettier/eslint-plugin-prettier/#recommended-configuration) 和[`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier)， 
+  - 这个插件其实也就是集成了[`eslint-plugin-prettier`](https://github.com/prettier/eslint-plugin-prettier/#recommended-configuration) 和[`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier)，
 
 - `@rushstack/eslint-patch`的作用是配合`@vue/eslint-config-prettier`使用， 减少安装太多的依赖项。
 
@@ -219,13 +208,9 @@ npm install prettier -D
 
 可以看看这篇文章：https://juejin.cn/post/7156893291726782500#heading-8
 
-
-
 ## 约定式提交规范
 
 https://juejin.cn/post/7325243117861879818#heading-19
-
-
 
 ### 规范git提交代码
 
@@ -280,18 +265,15 @@ export default {
 
 下面是常用的hooks：
 
->1. pre-commit：钩子在提交信息前运行命令。
->
->2. prepare-commit-msg：钩子在启动提交信息编辑器之前，默认信息被创建之后运行。
->
->3. commit-msg：这个钩子在 `git commit` 和 `git merge` 命令触发，会传递一个参数，该参数为存放当前 commit 消息的临时文件路径。 如果该钩子脚本以非零值退出，Git 将放弃提交， 因此，可以用来在提交通过前验证项目状态或提交信息。
->
->4. post-commit：钩子在整个提交过程完成后运行
+> 1.  pre-commit：钩子在提交信息前运行命令。
+> 2.  prepare-commit-msg：钩子在启动提交信息编辑器之前，默认信息被创建之后运行。
+> 3.  commit-msg：这个钩子在 `git commit` 和 `git merge` 命令触发，会传递一个参数，该参数为存放当前 commit 消息的临时文件路径。 如果该钩子脚本以非零值退出，Git 将放弃提交， 因此，可以用来在提交通过前验证项目状态或提交信息。
+> 4.  post-commit：钩子在整个提交过程完成后运行
 
 1. 安装`pnpm install husky --save-dev`
 2. `npx husky init`
 3. 删除`pre-commit`文件
-4. 在命令行中输入 `echo "npx --no -- commitlint --edit \$1" > .husky/commit-msg` 
+4. 在命令行中输入 `echo "npx --no -- commitlint --edit \$1" > .husky/commit-msg`
 
 此时如果不规范的提交代码msg，会报错.
 
@@ -379,16 +361,13 @@ module.exports = {
 
    `npm run lint --edit $1`
 
-   
-   
-
-此时执行git commit 
+此时执行git commit
 
 ![image-20240402205714600](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402205714600.png)
 
 但是如果是warning仍会通过。
 
- 如果是error 则不会通过
+如果是error 则不会通过
 
 ![image-20240402210100794](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402210100794.png)
 
@@ -404,8 +383,6 @@ npx lint-staged
 执行git commit测试
 
 ![image-20240402210901295](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240402210901295.png)
-
-
 
 ## 开发环境和生产环境
 
@@ -441,8 +418,8 @@ npx lint-staged
 - vite定义环境变量：只有以 `VITE_` 为前缀的变量才会暴露给经过 vite 处理的代码。
 
   ```ts
-  VITE_SOME_KEY=123
-  DB_PASSWORD=foobar
+  VITE_SOME_KEY = 123
+  DB_PASSWORD = foobar
   ```
 
   在客户端获取定义的环境变量数据
@@ -476,8 +453,6 @@ npx lint-staged
    @import './reset.less';
    @import './common.less';
    ```
-
-   
 
 ## 引入element-plus
 
@@ -513,18 +488,18 @@ npx lint-staged
    import AutoImport from 'unplugin-auto-import/vite'
    import Components from 'unplugin-vue-components/vite'
    import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-   
+
    export default defineConfig({
      // ...
      plugins: [
        // ...
        AutoImport({
-         resolvers: [ElementPlusResolver()],
+         resolvers: [ElementPlusResolver()]
        }),
        Components({
-         resolvers: [ElementPlusResolver()],
-       }),
-     ],
+         resolvers: [ElementPlusResolver()]
+       })
+     ]
    })
    ```
 
@@ -561,11 +536,9 @@ npx lint-staged
            }
          ]
        })
-     ],
+     ]
    })
    ```
-
-   
 
 ## 项目目录搭建
 
@@ -649,8 +622,6 @@ app.use(icons)
 <el-icon><UserFilled /></el-icon>
 ```
 
-
-
 ## vite中使用外部svg图标
 
 1. 安装
@@ -674,20 +645,20 @@ app.use(icons)
          iconDirs: [fileURLToPath(new URL('./src/icons/svg', import.meta.url))],
          // 指定symbolId格式
          symbolId: 'icon-[dir]-[name]'
-   
+
          /**
           * 自定义插入位置
           * @default: body-last
           */
          // inject?: 'body-last' | 'body-first'
-   
+
          /**
           * custom dom id
           * @default: __svg__icons__dom__
           */
          // customDomId: '__svg__icons__dom__',
        })
-     ],
+     ]
    })
    ```
 
@@ -699,7 +670,7 @@ app.use(icons)
        <use :xlink:href="symbolId" :fill="props.color" />
      </svg>
    </template>
-   
+
    <script setup>
    import { computed } from 'vue'
    const props = defineProps({
@@ -720,7 +691,7 @@ app.use(icons)
        default: '1em'
      }
    })
-   
+
    const symbolId = computed(() => `#${props.prefix}-${props.name}`)
    </script>
    ```
@@ -735,7 +706,7 @@ app.use(icons)
    // svg图标
    import 'virtual:svg-icons-register'
    import svgIcon from '@/components/svg-icon/index.vue'
-   
+
    app.component('svg-icon', svgIcon)
    ```
 
@@ -753,8 +724,6 @@ app.use(icons)
 4. Token缓存
 5. 登录鉴权
 
-
-
 ## vscode + ts
 
 > 在vscode中配置tsconfig.json中，会时常会有一些点击ctrl识别不到的情况出现，这时候需要让vscode去识别这些配置。将路径改为一个错误的路径，唤醒路径。
@@ -771,13 +740,9 @@ app.use(icons)
 
 <img src="/Users/lihaoran/Library/Application Support/typora-user-images/image-20240404214616963.png" alt="image-20240404214616963" style="zoom:50%;" />
 
-
-
 ## Q
 
 Q: 在点击按钮发送请求的按钮上是不是都要加loading？
-
-
 
 ## App.vue整体搭建
 
@@ -787,8 +752,6 @@ Q: 在点击按钮发送请求的按钮上是不是都要加loading？
   height: 100vh;
 }
 ```
-
-
 
 ## 封装cache utils
 
@@ -807,13 +770,13 @@ class Cache {
     this.storage = type === CacheType.Local ? localStorage : sessionStorage
   }
 
-  setCache(key: string, value: any) {
+  setItem(key: string, value: any) {
     if (value) {
       this.storage.setItem(key, JSON.stringify(value))
     }
   }
 
-  getCache(key: string) {
+  getItem(key: string) {
     const value = this.storage.getItem(key)
     if (value) {
       return JSON.parse(value)
@@ -834,8 +797,6 @@ const sessionCache = new Cache(CacheType.Session)
 
 export { localCache, sessionCache }
 ```
-
-
 
 ## 前端登陆鉴权操作
 
@@ -858,7 +819,7 @@ const whiteList = ['/login']
 export function setupRouterGuard(router: Router) {
   router.beforeEach(async (to, from, next) => {
     // 判断有无TOKEN,登录鉴权
-    const isLogin = Boolean(localCache.getCache(LOGIN_TOKEN))
+    const isLogin = Boolean(localCache.getItem(LOGIN_TOKEN))
     if (!isLogin) {
       if (to.name === 'login') next()
 
@@ -881,21 +842,15 @@ export function setupRouterGuard(router: Router) {
 }
 ```
 
-
-
 ## 权限控制
 
 根据登录用户的不同，呈现不同的后台管理系统内容（具备不同的操作权限）。
 
 一般来说B端项目都是采用了RBAC权限设计。即role based access control（基本角色的访问控制）。
 
-
-
 ## 封装的axios有问题，需要重构
 
-
-
-
+##
 
 ## 搭建B端项目基本框架
 
@@ -904,7 +859,7 @@ export function setupRouterGuard(router: Router) {
 `views/main/index.vue`：
 
 ```vue
- <div class="main">
+<div class="main">
   <el-container class="main-content">
     <el-aside :width="isFold ? '60px' : '210px'">
       <main-menu :is-fold="isFold" />
@@ -963,15 +918,13 @@ export function setupRouterGuard(router: Router) {
 </div>
 ```
 
-
-
 ## 动态路由
 
 在显示左侧菜单栏的时候，根据接口数据返回菜单数据，然后渲染`el-meun`。 但是在`router.Typescript`中是注册所有的路由，然后页面跳转。这样的弊端是如果用户管理的路由地址，但是他没有用户管理路由的权限， 也是可以进入页面的。
 
 接口判断(后端要做的)：
 
-​	因为我们每个接口都带token，当我们进入用户管理页面会请求用户列表，那这个时候后端应该会进行校验，没有权限返回状态码。然后我们前端在根据状态码进行退出登陆然后跳转到登陆页面或者提示无权限进入404。
+​ 因为我们每个接口都带token，当我们进入用户管理页面会请求用户列表，那这个时候后端应该会进行校验，没有权限返回状态码。然后我们前端在根据状态码进行退出登陆然后跳转到登陆页面或者提示无权限进入404。
 
 动态路由（根据用户的权限信息，动态的添加路由，而不是一次性的注册所有路由）：
 
@@ -979,9 +932,9 @@ export function setupRouterGuard(router: Router) {
 
    ```ts
    const roles = {
-     "superAdmin": 所有的路由,
-     "admin": 一部分的路由,
-     "user": 一部分的路由
+     superAdmin: 所有的路由,
+     admin: 一部分的路由,
+     user: 一部分的路由
    }
    ```
 
@@ -1011,7 +964,7 @@ export function setupRouterGuard(router: Router) {
    export function mapMenusToRoutes(userMenus: any[]) {
      // 1.加载本地路由
      const localRoutes = loadLocalRoutes()
-   
+
      // 2.根据菜单去匹配正确的路由
      const routes: RouteRecordRaw[] = []
      for (const menu of userMenus) {
@@ -1022,7 +975,7 @@ export function setupRouterGuard(router: Router) {
            if (!routes.find((item) => item.path === menu.url)) {
              routes.push({ path: menu.url, redirect: route.path })
            }
-   
+
            // 2.将二级菜单对应的路径
            routes.push(route)
          }
@@ -1038,15 +991,12 @@ export function setupRouterGuard(router: Router) {
 
    ```ts
    router.beforeEach((to) => {
-     
      // ....
      if (to.path === '/main') {
        return firstMenu?.url
      }
    })
    ```
-
-
 
 ## 面包屑
 
@@ -1084,18 +1034,14 @@ export function mapPathToBreadcrumbs(path: string, userMenus: any[]) {
   </template>
 </el-breadcrumb>
 <script>
-  // ...
-  const breadcrumbs = computed(() => {
-    return mapPathToBreadcrumbs(route.path, userMenus)
-  })
+// ...
+const breadcrumbs = computed(() => {
+  return mapPathToBreadcrumbs(route.path, userMenus)
+})
 </script>
 ```
 
-
-
 ## 这个权限架构真的菜，重构！
-
-
 
 ## el-form
 
@@ -1120,8 +1066,6 @@ function handleResetClick() {
 </el-form>
 ```
 
-
-
 ## storeToRefs
 
 ```ts
@@ -1132,8 +1076,6 @@ import useSystemStore from '@/store/main/system/system'
 const { usersList, usersTotalCount } = storeToRefs(systemStore)
 ```
 
-
-
 ## dayjs UTC formatter
 
 ```ts
@@ -1142,10 +1084,7 @@ import utc from 'dayjs/plugin/utc'
 
 dayjs.extend(utc)
 
-export function formatUTC(
-  utcString: string,
-  format: string = 'YYYY/MM/DD HH:mm:ss'
-) {
+export function formatUTC(utcString: string, format: string = 'YYYY/MM/DD HH:mm:ss') {
   const resultTime = dayjs.utc(utcString).utcOffset(8).format(format)
   return resultTime
 }
@@ -1154,7 +1093,7 @@ export function formatUTC(
 ## element-plus 国际化
 
 ```vue
- <el-config-provider :locale="zhCn">
+<el-config-provider :locale="zhCn">
     <div class="app">
       <router-view></router-view>
     </div>
@@ -1165,6 +1104,66 @@ export function formatUTC(
 <script lang="ts" setup>
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 </script>
+```
+
+## 使用 vue-i18n 进行国际化
+
+## 组件状态驱动的动态 CSS 值
+
+```ts
+<template>
+  <div class="overview">
+    <h2>overview</h2>
+    <button @click="changeColor">changeColor</button>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+
+let color = ref('yellow')
+function changeColor() {
+  color.value = 'red'
+}
+</script>
+
+<style lang="scss" scoped>
+.overview {
+  color: v-bind(color);
+}
+</style>
+```
+
+## vue3中的css选择器
+
+### 深度选择器
+
+```vue
+<style scoped>
+.a :deep(.b) {
+  /* ... */
+}
+</style>
+```
+
+上面的代码会被编译成
+
+```css
+.a[data-v-f3f3eg9] .b {
+  /* ... */
+}
+```
+
+### 全局选择器
+
+> 让其中一个样式规则应用到全局
+
+```css
+<style scoped>
+:global(.red) {
+  color: red;
+}
+</style>
 ```
 
 ## 封装高级搜索
@@ -1343,17 +1342,9 @@ const modalConfigRef = computed(() => {
 <page-modal :modal-config="modalConfigRef" ref="modalRef" />
 ```
 
-
-
-
-
 ## 坑点
 
 - 如果`script`中的响应式数据没问题，但是页面却不显示，那么可能是数据初始化好了，但是页面还没渲染好(通常是由v-if控制了页面渲染)。
-
-
-
-
 
 ## 监听store中action的执行
 
@@ -1372,4 +1363,3 @@ systemStore.$onAction(({ name, after }) => {
   })
 })
 ```
-
