@@ -26,16 +26,16 @@ const useAnalysisStore = defineStore('analysis', {
   actions: {
     fetchDashboardDataAction() {
       getAmountList().then((res) => {
-        this.amountData = res.data
+        this.amountData = res
       })
       getCategoryGoodsCount().then((res) => {
-        this.goodsCategoryCount = res.data
+        this.goodsCategoryCount = res
       })
       getCategoryGoodsSale().then((res) => {
-        this.goodsCategorySale = res.data
+        this.goodsCategorySale = res
       })
       getCategoryGoodsFavor().then((res) => {
-        this.goodsCategoryFavor = res.data
+        this.goodsCategoryFavor = res
       })
       getGoodsAddressSale().then((res) => {
         this.goodsAddressSale = res.data

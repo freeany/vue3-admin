@@ -23,4 +23,7 @@ analysisStore.fetchDashboardDataAction()
 .el-row {
   margin-bottom: 20px;
 }
+:global(.red1) {
+  color: red;
+}
 </style>

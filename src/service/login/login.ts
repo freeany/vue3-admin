@@ -4,23 +4,23 @@ import type { IAccount } from '@/types'
 // import { LOGIN_TOKEN } from '@/global/constants'
 
 export function accountLoginRequest(account: IAccount) {
-  return hyRequest.post({
+  return hyRequest.request<any, any>({
+    method: 'POST',
     url: '/login',
     data: account
   })
 }
 
 export function getUserInfoById(id: number) {
-  return hyRequest.get({
+  return hyRequest.request<any, any>({
+    method: 'GET',
     url: `/users/${id}`
-    // headers: {
-    //   Authorization: 'Bearer ' + localCache.getItem(LOGIN_TOKEN)
-    // }
   })
 }
 
 export function getUserMenusByRoleId(id: number) {
-  return hyRequest.get({
+  return hyRequest.request<any, any>({
+    method: 'GET',
     url: `/role/${id}/menu`
   })
 }

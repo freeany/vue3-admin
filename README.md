@@ -783,7 +783,7 @@ class Cache {
     }
   }
 
-  removeCache(key: string) {
+  removeItem(key: string) {
     this.storage.removeItem(key)
   }
 
@@ -924,7 +924,7 @@ export function setupRouterGuard(router: Router) {
 
 接口判断(后端要做的)：
 
-​ 因为我们每个接口都带token，当我们进入用户管理页面会请求用户列表，那这个时候后端应该会进行校验，没有权限返回状态码。然后我们前端在根据状态码进行退出登陆然后跳转到登陆页面或者提示无权限进入404。
+ 因为我们每个接口都带token，当我们进入用户管理页面会请求用户列表，那这个时候后端应该会进行校验，没有权限返回状态码。然后我们前端在根据状态码进行退出登陆然后跳转到登陆页面或者提示无权限进入404。
 
 动态路由（根据用户的权限信息，动态的添加路由，而不是一次性的注册所有路由）：
 
@@ -964,7 +964,7 @@ export function setupRouterGuard(router: Router) {
    export function mapMenusToRoutes(userMenus: any[]) {
      // 1.加载本地路由
      const localRoutes = loadLocalRoutes()
-
+   
      // 2.根据菜单去匹配正确的路由
      const routes: RouteRecordRaw[] = []
      for (const menu of userMenus) {
@@ -975,7 +975,7 @@ export function setupRouterGuard(router: Router) {
            if (!routes.find((item) => item.path === menu.url)) {
              routes.push({ path: menu.url, redirect: route.path })
            }
-
+   
            // 2.将二级菜单对应的路径
            routes.push(route)
          }
@@ -1165,6 +1165,24 @@ function changeColor() {
 }
 </style>
 ```
+
+和如下一致，且不会在组件切换时消失(remove掉)。
+
+```html
+<style>
+  .red {
+    color: red
+	}
+</style>
+```
+
+
+
+## pinia的问题
+
+https://stackoverflow.com/questions/70710965/vue-cant-access-pinia-store-in-beforeenter-vue-router
+
+
 
 ## 封装高级搜索
 

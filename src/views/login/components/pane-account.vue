@@ -24,7 +24,7 @@ import { ElMessage } from 'element-plus'
 import type { FormRules, ElForm } from 'element-plus'
 import useLoginStore from '@/store/login/login'
 import type { IAccount } from '@/types'
-import { localCache } from '@/utils/cache'
+import { localCache } from '@/utils/storage'
 
 const CACHE_NAME = 'name'
 const CACHE_PASSWORD = 'password'
@@ -72,8 +72,8 @@ function loginAction(isRemPwd: boolean) {
           localCache.setItem(CACHE_NAME, name)
           localCache.setItem(CACHE_PASSWORD, password)
         } else {
-          localCache.removeCache(CACHE_NAME)
-          localCache.removeCache(CACHE_PASSWORD)
+          localCache.removeItem(CACHE_NAME)
+          localCache.removeItem(CACHE_PASSWORD)
         }
       })
     } else {

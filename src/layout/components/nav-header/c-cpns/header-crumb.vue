@@ -19,8 +19,6 @@ const route = useRoute()
 // 生成数组数据
 const breadcrumbs = ref<RouteLocationMatched[]>([])
 const getBreadcrumbData = () => {
-  console.log(route.matched, '/route.matchedroute.matched')
-
   breadcrumbs.value = route.matched
 }
 

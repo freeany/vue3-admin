@@ -1,7 +1,7 @@
 <template>
   <div class="header-info">
     <div class="operation">
-      <span>
+      <span span>
         <el-icon><bell /></el-icon>
       </span>
       <span>
@@ -10,6 +10,9 @@
       <span>
         <span class="dot"></span>
         <el-icon><Postcard /></el-icon>
+      </span>
+      <span>
+        <lang-select></lang-select>
       </span>
     </div>
     <div class="info">
@@ -44,6 +47,7 @@
 </template>
 
 <script setup lang="ts" name="header-info">
+import langSelect from '@/components/lang-select/index.vue'
 import useLoginStore from '@/store/login/login'
 const loginStore = useLoginStore()
 

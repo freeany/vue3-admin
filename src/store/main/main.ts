@@ -20,9 +20,9 @@ const useMainStore = defineStore('main', {
       const menuResult = await getEntireMenus()
 
       // 保存数据
-      this.entireRoles = rolesResult.data.list
-      this.entireDepartments = departmentsResult.data.list
-      this.entireMenus = menuResult.data.list
+      this.entireRoles = rolesResult.list
+      this.entireDepartments = departmentsResult.list
+      this.entireMenus = menuResult.list
     }
   }
 })

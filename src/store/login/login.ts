@@ -26,18 +26,20 @@ const useLoginStore = defineStore('login', {
     async loginAccountAction(account: IAccount) {
       // 1.账号登录, 获取token等信息
       const loginResult = await accountLoginRequest(account)
-      const id = loginResult.data.id
-      this.token = loginResult.data.token
+
+      const id = loginResult.id
+      this.token = loginResult.token
       localCache.setItem(LOGIN_TOKEN, this.token)
 
       // 2.获取登录用户的详细信息(role信息)
       const userInfoResult = await getUserInfoById(id)
-      const userInfo = userInfoResult.data
+
+      const userInfo = userInfoResult
       this.userInfo = userInfo
 
       // 3.根据角色请求用户的权限(菜单menus)
       const userMenusResult = await getUserMenusByRoleId(this.userInfo.role.id)
-      const userMenus = userMenusResult.data
+      const userMenus = userMenusResult
       this.userMenus = userMenus
 
       // 4.进行本地缓存
@@ -47,10 +49,6 @@ const useLoginStore = defineStore('login', {
       // 5.请求所有roles/departments数据
       const mainStore = useMainStore()
       mainStore.fetchEntireDataAction()
-
-      // 重要: 获取登录用户的所有按钮的权限
-      const permissions = mapMenuToPersssions(userMenus)
-      this.permissions = permissions
 
       // 重要: 动态的添加路由
       // routes.forEach((route) => router.addRoute('main', route))
@@ -81,9 +79,9 @@ const useLoginStore = defineStore('login', {
       }
     },
     logout() {
-      localCache.removeCache('token')
-      localCache.removeCache('userInfo')
-      localCache.removeCache('userMenus')
+      localCache.removeItem(LOGIN_TOKEN)
+      localCache.removeItem('userInfo')
+      localCache.removeItem('userMenus')
       router.push('/login')
     }
   }
