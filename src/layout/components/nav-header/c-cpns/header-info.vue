@@ -15,7 +15,7 @@
         <lang-select></lang-select>
       </span>
       <span>
-        <screen-full></screen-full>
+        <screen-full class="right-menu-item hover-effect"></screen-full>
       </span>
     </div>
     <div class="info">

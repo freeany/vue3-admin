@@ -55,5 +55,6 @@ declare module 'vue' {
     RouterView: (typeof import('vue-router'))['RouterView']
     ScreenFull: (typeof import('./src/components/screen-full/index.vue'))['default']
     SvgIcon: (typeof import('./src/components/svg-icon/index.vue'))['default']
+    TagsView: (typeof import('./src/components/tags-view/index.vue'))['default']
   }
 }

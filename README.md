@@ -1224,6 +1224,20 @@ export const useAppStore = defineStore('app-store', {
 
 
 
+## 在左侧菜单栏 最上面一个输入框中输入菜单名称，过滤菜单
+
+
+
+
+
+## 侧边栏菜单和tagview 的国际化
+
+- 不采用视频中的方式，而是采用全部在zh/en文件写入的方式，没有约定。
+
+
+
+
+
 ## 组件状态驱动的动态 CSS 值
 
 ```ts
