@@ -1,5 +1,5 @@
 <template>
-  <div class="header-crumbs">
+  <div class="header-crumbs" id="guide-breadcrumb">
     <el-breadcrumb class="breadcrumb" separator="/">
       <transition-group name="breadcrumb">
         <template v-for="item in breadcrumbs" :key="item.path">

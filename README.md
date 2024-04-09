@@ -1314,6 +1314,12 @@ https://stackoverflow.com/questions/70710965/vue-cant-access-pinia-store-in-befo
 
 
 
+## vue3全局属性
+
+`app.config.globalProperties` 替代过滤器的使用。
+
+
+
 ## 封装高级搜索
 
 ```vue

@@ -17,6 +17,9 @@
       <span>
         <screen-full class="right-menu-item hover-effect"></screen-full>
       </span>
+      <span>
+        <guide class="right-menu-item hover-effect"></guide>
+      </span>
     </div>
     <div class="info">
       <el-dropdown>
@@ -52,6 +55,8 @@
 <script setup lang="ts" name="header-info">
 import langSelect from '@/components/lang-select/index.vue'
 import screenFull from '@/components/screen-full/index.vue'
+import guide from '@/components/guide/index.vue'
+
 import useLoginStore from '@/store/login/login'
 const loginStore = useLoginStore()
 

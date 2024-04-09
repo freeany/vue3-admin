@@ -1,10 +1,14 @@
 <template>
   <div>
-    <svg-icon :name="isFullscreen ? 'exit-fullscreen' : 'fullscreen'" @click="onToggle" />
+    <svg-icon
+      id="guide-full"
+      :name="isFullscreen ? 'exit-fullscreen' : 'fullscreen'"
+      @click="onToggle"
+    />
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import screenfull from 'screenfull'
 
