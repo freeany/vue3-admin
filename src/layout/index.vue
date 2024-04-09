@@ -7,6 +7,7 @@
       <el-container>
         <el-header height="50px">
           <main-header @fold-change="handleFoldChange" />
+          <tags-view id="guide-tags"></tags-view>
         </el-header>
         <el-main>
           <router-view></router-view>
@@ -20,6 +21,7 @@
 import { ref } from 'vue'
 import MainMenu from '@/layout/components/nav-menu/nav-menu.vue'
 import MainHeader from '@/layout/components/nav-header/nav-header.vue'
+import tagsView from '@/components/tags-view/index.vue'
 
 // 处理main-header中折叠的变化
 const isFold = ref(false)

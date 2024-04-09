@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     BarEchart: (typeof import('./src/components/page-charts/src/bar-echart.vue'))['default']
     BaseEchart: (typeof import('./src/components/echarts/src/base-echart.vue'))['default']
+    ContextMenu: (typeof import('./src/components/tags-view/context-menu.vue'))['default']
     CountCard: (typeof import('./src/components/count-card/count-card.vue'))['default']
     ElAside: (typeof import('element-plus/es'))['ElAside']
     ElAvatar: (typeof import('element-plus/es'))['ElAvatar']
@@ -36,6 +37,7 @@ declare module 'vue' {
     ElOption: (typeof import('element-plus/es'))['ElOption']
     ElPagination: (typeof import('element-plus/es'))['ElPagination']
     ElRow: (typeof import('element-plus/es'))['ElRow']
+    ElScrollbar: (typeof import('element-plus/es'))['ElScrollbar']
     ElSelect: (typeof import('element-plus/es'))['ElSelect']
     ElSubMenu: (typeof import('element-plus/es'))['ElSubMenu']
     ElTable: (typeof import('element-plus/es'))['ElTable']

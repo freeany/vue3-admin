@@ -13,9 +13,10 @@ import { storeToRefs } from 'pinia'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import en from 'element-plus/es/locale/lang/en'
 import { computed, watch } from 'vue'
-import { useAppStore, type TagViewType } from '@/store/app'
+import { useAppStore } from '@/store/app'
 import { useRoute } from 'vue-router'
 import { isTags } from '@/utils/tag-views'
+import type { TagViewType } from './@types/tag'
 
 const appStore = useAppStore()
 const { lang } = storeToRefs(appStore)
