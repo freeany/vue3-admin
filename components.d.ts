@@ -53,6 +53,7 @@ declare module 'vue' {
     RoseEchart: (typeof import('./src/components/page-charts/src/rose-echart.vue'))['default']
     RouterLink: (typeof import('vue-router'))['RouterLink']
     RouterView: (typeof import('vue-router'))['RouterView']
+    ScreenFull: (typeof import('./src/components/screen-full/index.vue'))['default']
     SvgIcon: (typeof import('./src/components/svg-icon/index.vue'))['default']
   }
 }

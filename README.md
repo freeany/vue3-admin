@@ -1093,11 +1093,27 @@ export function formatUTC(utcString: string, format: string = 'YYYY/MM/DD HH:mm:
 ## element-plus 国际化
 
 ```vue
-<el-config-provider :locale="zhCn">
+<template>
+  <el-config-provider :locale="locale">
     <div class="app">
       <router-view></router-view>
     </div>
   </el-config-provider>
+</template>
+
+<script lang="ts" setup>
+import { storeToRefs } from 'pinia'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import en from 'element-plus/es/locale/lang/en'
+import { computed } from 'vue'
+import { useAppStore } from '@/store/app'
+
+const appStore = useAppStore()
+const { lang } = storeToRefs(appStore)
+
+const locale = computed(() => (lang.value === 'zh' ? zhCn : en))
+</script>
+
 ```
 
 ```ts
@@ -1107,6 +1123,106 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 ```
 
 ## 使用 vue-i18n 进行国际化
+
+1. I18n/index.ts
+
+```ts
+import { createI18n } from 'vue-i18n'
+import type { App } from 'vue'
+import en from './lang/en.json'
+import zh from './lang/zh.json'
+import { localCache } from '@/utils/storage'
+
+export const i18n = createI18n({
+  legacy: false,
+  locale: localCache.getItem('lang') || 'zh', // 默认显示语言
+  fallbackLocale: 'en',
+  messages: {
+    zh,
+    en
+  }
+})
+
+export function installI18n(app: App) {
+  app.use(i18n)
+}
+```
+
+2. 切换国际化语言的组件
+
+```vue
+<template>
+  <el-dropdown trigger="click" class="international" @command="handleSetLanguage">
+    <div>
+      <el-tooltip :content="$t('navBar.lang')" :effect="'dark'">
+        <svg-icon id="guide-lang" name="language" />
+      </el-tooltip>
+    </div>
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item :disabled="lang === 'zh'" command="zh"> 中文 </el-dropdown-item>
+        <el-dropdown-item :disabled="lang === 'en'" command="en"> English </el-dropdown-item>
+      </el-dropdown-menu>
+    </template>
+  </el-dropdown>
+</template>
+
+<script setup>
+import { useI18n } from 'vue-i18n'
+import { defineProps } from 'vue'
+import { storeToRefs } from 'pinia'
+import { ElMessage } from 'element-plus'
+import { useAppStore } from '@/store/app'
+
+const appStore = useAppStore()
+const { lang } = storeToRefs(appStore)
+
+// 切换语言的方法
+const i18n = useI18n()
+const handleSetLanguage = (lang) => {
+  i18n.locale.value = lang
+  appStore.setAppLang(lang)
+  ElMessage.success(i18n.t('toast.switchLangSuccess'))
+}
+</script>
+```
+
+3. 在store中设置i18n的状态
+
+```ts
+import { defineStore } from 'pinia'
+import { localCache } from '@/utils/storage'
+
+export const useAppStore = defineStore('app-store', {
+  state: () => {
+    return {
+      lang: localCache.getItem('lang') || 'zh'
+    }
+  },
+  actions: {
+    setAppLang(lang: 'zh' | 'cn') {
+      this.lang = lang
+      localCache.setItem('lang', lang)
+    }
+  }
+})
+```
+
+
+
+## 自定义主题
+
+### elementplus样式
+
+1. 获取当前 `element-plus` 的所有样式
+2. 找到我们想要替换的样式部分，通过正则完成替换
+3. 把替换后的样式写入到 `style` 标签中，利用样式优先级的特性，替代固有样式
+
+### 自定义的主题
+
+对于 **自定义主题而言**，核心的原理其实就是 **修改`scss`变量来进行实现主题色变化** 
+
+
 
 ## 组件状态驱动的动态 CSS 值
 

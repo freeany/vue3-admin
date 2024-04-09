@@ -3,6 +3,10 @@
     <h2>{{ $t('login.title') }}</h2>
     <div class="red1">bbb</div>
     <button @click="changeColor">changeColor</button>
+
+    <div>
+      <el-date-picker v-model="value2" type="date" />
+    </div>
   </div>
 </template>
 
@@ -13,6 +17,8 @@ let color = ref('pink')
 function changeColor() {
   color.value = 'red'
 }
+
+const value2 = ref('')
 </script>
 
 <style lang="scss" scoped>

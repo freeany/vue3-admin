@@ -14,6 +14,9 @@
       <span>
         <lang-select></lang-select>
       </span>
+      <span>
+        <screen-full></screen-full>
+      </span>
     </div>
     <div class="info">
       <el-dropdown>
@@ -48,6 +51,7 @@
 
 <script setup lang="ts" name="header-info">
 import langSelect from '@/components/lang-select/index.vue'
+import screenFull from '@/components/screen-full/index.vue'
 import useLoginStore from '@/store/login/login'
 const loginStore = useLoginStore()
 
