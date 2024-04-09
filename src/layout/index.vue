@@ -7,10 +7,17 @@
       <el-container>
         <el-header height="50px">
           <main-header @fold-change="handleFoldChange" />
-          <tags-view id="guide-tags"></tags-view>
         </el-header>
+        <tags-view id="guide-tags"></tags-view>
         <el-main>
-          <router-view></router-view>
+          <!-- <router-view></router-view> -->
+          <router-view v-slot="{ Component, route }">
+            <transition name="fade-transform" mode="out-in">
+              <keep-alive>
+                <component :is="Component" :key="route.path" />
+              </keep-alive>
+            </transition>
+          </router-view>
         </el-main>
       </el-container>
     </el-container>
