@@ -1320,6 +1320,129 @@ https://stackoverflow.com/questions/70710965/vue-cant-access-pinia-store-in-befo
 
 
 
+## RBAC 权限控制体系
+
+> 基于 角色的权限 控制 用户的访问
+
+1. 用户列表中为用户指定角色
+2. 通过角色列表为角色指定权限
+3. 通过权限列表查看当前项目所有权限
+
+![image-20240410132538080](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240410132538080.png)
+
+用户列表：为用户分配角色
+
+角色列表：为角色分配权限
+
+权限列表：权限列表展示（只展示权限）
+
+路由权限：**不同的权限进入系统可以看到不同的路由** 
+
+- **根据不同的权限数据，利用  [addRoute API](https://next.router.vuejs.org/zh/api/#addroute) 生成不同的私有路由表 ** 即可实现 **页面权限** 功能
+
+- 实现：
+
+  1. 获取 **权限数据**
+
+  2. 利用 [addRoute API](https://next.router.vuejs.org/zh/api/#addroute) 动态添加路由到 **路由表** 中
+
+     1. 我们可以为每个权限路由指定一个 `name`，每个 `name` 对应一个 **页面权限**
+
+     2. 通过 `name` 与 **页面权限** 匹配的方式筛选出对应的权限路由
+
+        ```ts
+        filterRoutes(context, menus) {
+          const routes = []
+          // 路由权限匹配
+          menus.forEach(key => {
+            // 权限名 与 路由的 name 匹配
+            routes.push(...privateRoutes.filter(item => item.name === key))
+          })
+          // 最后添加 不匹配路由进入 404
+          routes.push({
+            path: '/:catchAll(.*)',
+            redirect: '/404'
+          })
+          context.commit('setRoutes', routes)
+          return routes
+        }
+        ```
+
+        ```ts
+        // 判断用户资料是否获取
+        // 若不存在用户信息，则需要获取用户信息
+        if (!store.getters.hasUserInfo) {
+          // 触发获取用户信息的 action，并获取用户当前权限
+          const { permission } = await store.dispatch('user/getUserInfo')
+          // 处理用户权限，筛选出需要添加的权限
+          const filterRoutes = await store.dispatch(
+            'permission/filterRoutes',
+            permission.menus
+          )
+          // 利用 addRoute 循环添加
+          filterRoutes.forEach(item => {
+            router.addRoute(item)
+          })
+          // 添加完动态路由之后，需要在进行一次主动跳转
+          return next(to.path)
+        }
+        next()
+        ```
+
+        
+
+功能权限：根据不同的 **权限数据**，展示不同的 **功能按钮**
+
+- 只需要**根据权限数据，隐藏功能按钮** 即可
+- 实现：
+  1. 获取 **权限数据**
+  2. 定义 **隐藏按钮方式**（通过指令）
+  3. 依据数据隐藏按钮
+
+自定义指令
+
+```ts
+import store from '@/store'
+
+function checkPermission(el, binding) {
+  // 获取绑定的值，此处为权限
+  const { value } = binding
+  // 获取所有的功能指令
+  const points = store.getters.userInfo.permission.points
+  // 当传入的指令集为数组时
+  if (value && value instanceof Array) {
+    // 匹配对应的指令
+    const hasPermission = points.some(point => {
+      return value.includes(point)
+    })
+    // 如果无法匹配，则表示当前用户无该指令，那么删除对应的功能按钮
+    if (!hasPermission) {
+      el.parentNode && el.parentNode.removeChild(el)
+    }
+  } else {
+    // eslint-disabled-next-line
+    throw new Error('v-permission value is ["admin","editor"]')
+  }
+}
+
+export default {
+  // 在绑定元素的父组件被挂载后调用
+  mounted(el, binding) {
+    checkPermission(el, binding)
+  },
+  // 在包含组件的 VNode 及其子组件的 VNode 更新后调用
+  update(el, binding) {
+    checkPermission(el, binding)
+  }
+}
+```
+
+
+
+
+
+![image-20240410134116654](/Users/lihaoran/Library/Application Support/typora-user-images/image-20240410134116654.png)
+
 ## 封装高级搜索
 
 ```vue
